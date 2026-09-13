@@ -1,0 +1,709 @@
+{
+  "sku_master": [
+    {
+      "description": "IC BP Afghan Dry Fr. 5 lit. (1x6)",
+      "code": "EXPORT",
+      "combine": "IC BP Afghan Dry Fr. 5 lit. (1x6) - EXPORT",
+      "litersPerCrate": 30,
+      "piecesPerCrate": 6,
+      "litersPerPiece": 5,
+      "category": "5 LTR"
+    },
+    {
+      "description": "IC BP Afghan Dry Fr. 5 lit. (1x6)",
+      "code": "ICBPADF16",
+      "combine": "IC BP Afghan Dry Fr. 5 lit. (1x6) - ICBPADF16",
+      "litersPerCrate": 30,
+      "piecesPerCrate": 6,
+      "litersPerPiece": 5,
+      "category": "5 LTR"
+    },
+    {
+      "description": "IC BP  Shahi Anjir  5 lit. (1x6)",
+      "code": "EXPORT",
+      "combine": "IC BP  Shahi Anjir  5 lit. (1x6) - EXPORT",
+      "litersPerCrate": 30,
+      "piecesPerCrate": 6,
+      "litersPerPiece": 5,
+      "category": "5 LTR"
+    },
+    {
+      "description": "IC BP Anjir 5 lit. (1x6)",
+      "code": "ICBPANJ09",
+      "combine": "IC BP Anjir 5 lit. (1x6) - ICBPANJ09",
+      "litersPerCrate": 30,
+      "piecesPerCrate": 6,
+      "litersPerPiece": 5,
+      "category": "5 LTR"
+    },
+    {
+      "description": "IC BP American Nut 5Lit (1x6)",
+      "code": "ICBPAMN52",
+      "combine": "IC BP American Nut 5Lit (1x6) - ICBPAMN52",
+      "litersPerCrate": 30,
+      "piecesPerCrate": 6,
+      "litersPerPiece": 5,
+      "category": "5 LTR"
+    },
+    {
+      "description": "IC BP American Nut 5Lit (1x6)",
+      "code": "EXPORT",
+      "combine": "IC BP American Nut 5Lit (1x6) - EXPORT",
+      "litersPerCrate": 30,
+      "piecesPerCrate": 6,
+      "litersPerPiece": 5,
+      "category": "2 LTR"
+    },
+    {
+      "description": "IC BP Black Currant 5 lit. (1x6)",
+      "code": "ICBPBCU08",
+      "combine": "IC BP Black Currant 5 lit. (1x6) - ICBPBCU08",
+      "litersPerCrate": 30,
+      "piecesPerCrate": 6,
+      "litersPerPiece": 5,
+      "category": "2 LTR"
+    },
+    {
+      "description": "IC BP Black Currant 5 lit. (1x6)",
+      "code": "EXPORT",
+      "combine": "IC BP Black Currant 5 lit. (1x6) - EXPORT",
+      "litersPerCrate": 30,
+      "piecesPerCrate": 6,
+      "litersPerPiece": 5,
+      "category": "2 LTR"
+    },
+    {
+      "description": "IC BP Butter Scotch 5 lit. (1x6)",
+      "code": "ICBPBSC03",
+      "combine": "IC BP Butter Scotch 5 lit. (1x6) - ICBPBSC03",
+      "litersPerCrate": 30,
+      "piecesPerCrate": 6,
+      "litersPerPiece": 5,
+      "category": "2 LTR"
+    },
+    {
+      "description": "IC BP Butter Scotch 5 lit. (1x6)",
+      "code": "EXPORT",
+      "combine": "IC BP Butter Scotch 5 lit. (1x6) - EXPORT",
+      "litersPerCrate": 30,
+      "piecesPerCrate": 6,
+      "litersPerPiece": 5,
+      "category": "2 LTR"
+    },
+    {
+      "description": "IC �BP Raj Bhog 5 lit. (1*6)",
+      "code": "ICBPRJB11",
+      "combine": "IC �BP Raj Bhog 5 lit. (1*6) - ICBPRJB11",
+      "litersPerCrate": 30,
+      "piecesPerCrate": 6,
+      "litersPerPiece": 5,
+      "category": "2 LTR"
+    },
+    {
+      "description": "IC �BP Raj Bhog 5 lit. (1*6)",
+      "code": "EXPORT",
+      "combine": "IC �BP Raj Bhog 5 lit. (1*6) - EXPORT",
+      "litersPerCrate": 30,
+      "piecesPerCrate": 6,
+      "litersPerPiece": 5,
+      "category": "2 LTR"
+    },
+    {
+      "description": "IC BP Choco Chips 5 lit. (1x6)",
+      "code": "ICBPCCH06",
+      "combine": "IC BP Choco Chips 5 lit. (1x6) - ICBPCCH06",
+      "litersPerCrate": 30,
+      "piecesPerCrate": 6,
+      "litersPerPiece": 5,
+      "category": "5 LTR"
+    },
+    {
+      "description": "IC BP Choco Chips 5 lit. (1x6)",
+      "code": "EXPORT",
+      "combine": "IC BP Choco Chips 5 lit. (1x6) - EXPORT",
+      "litersPerCrate": 30,
+      "piecesPerCrate": 6,
+      "litersPerPiece": 5,
+      "category": "5 LTR"
+    },
+    {
+      "description": "IC BP cookies 'n' cream 5 lit. (1x6)",
+      "code": "ICBPCCM42",
+      "combine": "IC BP cookies 'n' cream 5 lit. (1x6) - ICBPCCM42",
+      "litersPerCrate": 30,
+      "piecesPerCrate": 6,
+      "litersPerPiece": 5,
+      "category": "5 LTR"
+    },
+    {
+      "description": "IC BP cookies 'n' cream 5 lit. (1x6)",
+      "code": "EXPORT",
+      "combine": "IC BP cookies 'n' cream 5 lit. (1x6) - EXPORT",
+      "litersPerCrate": 30,
+      "piecesPerCrate": 6,
+      "litersPerPiece": 5,
+      "category": "5 LTR"
+    },
+    {
+      "description": "IC BP Chocolate Brownie 5 lit. (1x6)",
+      "code": "ICBPCHB41",
+      "combine": "IC BP Chocolate Brownie 5 lit. (1x6) - ICBPCHB41",
+      "litersPerCrate": 30,
+      "piecesPerCrate": 6,
+      "litersPerPiece": 5,
+      "category": "5 LTR"
+    },
+    {
+      "description": "IC BP Chocolate Brownie 5 lit. (1x6)",
+      "code": "EXPORT",
+      "combine": "IC BP Chocolate Brownie 5 lit. (1x6) - EXPORT",
+      "litersPerCrate": 30,
+      "piecesPerCrate": 6,
+      "litersPerPiece": 5,
+      "category": "5 LTR"
+    },
+    {
+      "description": "IC BP Chocolate 5 lit. (1x6)",
+      "code": "EXPORT",
+      "combine": "IC BP Chocolate 5 lit. (1x6) - EXPORT",
+      "litersPerCrate": 30,
+      "piecesPerCrate": 6,
+      "litersPerPiece": 5,
+      "category": "5 LTR"
+    },
+    {
+      "description": "IC BP Chocolate 5 lit. (1x6)",
+      "code": "ICBPCHO02",
+      "combine": "IC BP Chocolate 5 lit. (1x6) - ICBPCHO02",
+      "litersPerCrate": 30,
+      "piecesPerCrate": 6,
+      "litersPerPiece": 5,
+      "category": "5 LTR"
+    }
+  ],
+  "categories": [
+    "5 LTR",
+    "2 LTR"
+  ],
+  "manager_setup": [
+    {
+      "slot": 1,
+      "sku": "IC BP Afghan Dry Fr. 5 lit. (1x6) - ICBPADF16",
+      "unlocked": false
+    },
+    {
+      "slot": 2,
+      "sku": "IC BP Black Currant 5 lit. (1x6) - ICBPBCU08",
+      "unlocked": false
+    },
+    {
+      "slot": 3,
+      "sku": "IC BP Black Currant 5 lit. (1x6) - EXPORT",
+      "unlocked": false
+    },
+    {
+      "slot": 4,
+      "sku": "IC BP Butter Scotch 5 lit. (1x6) - ICBPBSC03",
+      "unlocked": false
+    },
+    {
+      "slot": 5,
+      "sku": "IC BP Butter Scotch 5 lit. (1x6) - EXPORT",
+      "unlocked": false
+    },
+    {
+      "slot": 6,
+      "sku": "IC �BP Raj Bhog 5 lit. (1*6) - ICBPRJB11",
+      "unlocked": false
+    },
+    {
+      "slot": 7,
+      "sku": "IC �BP Raj Bhog 5 lit. (1*6) - EXPORT",
+      "unlocked": false
+    },
+    {
+      "slot": 8,
+      "sku": "IC BP Afghan Dry Fr. 5 lit. (1x6) - EXPORT",
+      "unlocked": false
+    },
+    {
+      "slot": 9,
+      "sku": "IC BP Afghan Dry Fr. 5 lit. (1x6) - ICBPADF16",
+      "unlocked": false
+    },
+    {
+      "slot": 10,
+      "sku": "IC BP  Shahi Anjir  5 lit. (1x6) - EXPORT",
+      "unlocked": false
+    },
+    {
+      "slot": 11,
+      "sku": "IC BP Anjir 5 lit. (1x6) - ICBPANJ09",
+      "unlocked": false
+    },
+    {
+      "slot": 12,
+      "sku": "IC BP American Nut 5Lit (1x6) - ICBPAMN52",
+      "unlocked": false
+    },
+    {
+      "slot": 13,
+      "sku": "IC BP Choco Chips 5 lit. (1x6) - ICBPCCH06",
+      "unlocked": false
+    },
+    {
+      "slot": 14,
+      "sku": "IC BP Choco Chips 5 lit. (1x6) - EXPORT",
+      "unlocked": false
+    },
+    {
+      "slot": 15,
+      "sku": "IC BP cookies 'n' cream 5 lit. (1x6) - ICBPCCM42",
+      "unlocked": false
+    },
+    {
+      "slot": 16,
+      "sku": "IC BP cookies 'n' cream 5 lit. (1x6) - EXPORT",
+      "unlocked": false
+    },
+    {
+      "slot": 17,
+      "sku": "IC BP Chocolate Brownie 5 lit. (1x6) - ICBPCHB41",
+      "unlocked": false
+    },
+    {
+      "slot": 18,
+      "sku": "IC BP Chocolate Brownie 5 lit. (1x6) - EXPORT",
+      "unlocked": false
+    },
+    {
+      "slot": 19,
+      "sku": "IC BP Chocolate 5 lit. (1x6) - EXPORT",
+      "unlocked": false
+    },
+    {
+      "slot": 20,
+      "sku": "IC BP Chocolate 5 lit. (1x6) - ICBPCHO02",
+      "unlocked": false
+    },
+    {
+      "slot": 21,
+      "sku": "IC BP American Nut 5Lit (1x6) - EXPORT",
+      "unlocked": false
+    },
+    {
+      "slot": 22,
+      "sku": "IC BP Black Currant 5 lit. (1x6) - ICBPBCU08",
+      "unlocked": false
+    },
+    {
+      "slot": 23,
+      "sku": "IC BP Black Currant 5 lit. (1x6) - EXPORT",
+      "unlocked": false
+    },
+    {
+      "slot": 24,
+      "sku": "IC BP Butter Scotch 5 lit. (1x6) - ICBPBSC03",
+      "unlocked": false
+    },
+    {
+      "slot": 25,
+      "sku": "IC BP Butter Scotch 5 lit. (1x6) - EXPORT",
+      "unlocked": false
+    },
+    {
+      "slot": 26,
+      "sku": "IC �BP Raj Bhog 5 lit. (1*6) - ICBPRJB11",
+      "unlocked": false
+    },
+    {
+      "slot": 27,
+      "sku": "IC �BP Raj Bhog 5 lit. (1*6) - EXPORT",
+      "unlocked": false
+    },
+    {
+      "slot": 28,
+      "sku": "IC BP American Nut 5Lit (1x6) - EXPORT",
+      "unlocked": false
+    },
+    {
+      "slot": 29,
+      "sku": "IC BP Black Currant 5 lit. (1x6) - ICBPBCU08",
+      "unlocked": false
+    },
+    {
+      "slot": 30,
+      "sku": "IC BP Black Currant 5 lit. (1x6) - EXPORT",
+      "unlocked": false
+    },
+    {
+      "slot": 31,
+      "sku": "IC BP Butter Scotch 5 lit. (1x6) - ICBPBSC03",
+      "unlocked": false
+    },
+    {
+      "slot": 32,
+      "sku": "IC BP Butter Scotch 5 lit. (1x6) - EXPORT",
+      "unlocked": false
+    },
+    {
+      "slot": 33,
+      "sku": "IC �BP Raj Bhog 5 lit. (1*6) - ICBPRJB11",
+      "unlocked": false
+    },
+    {
+      "slot": 34,
+      "sku": "IC �BP Raj Bhog 5 lit. (1*6) - EXPORT",
+      "unlocked": false
+    },
+    {
+      "slot": 35,
+      "sku": "IC BP American Nut 5Lit (1x6) - EXPORT",
+      "unlocked": false
+    },
+    {
+      "slot": 36,
+      "sku": "IC BP Black Currant 5 lit. (1x6) - ICBPBCU08",
+      "unlocked": false
+    },
+    {
+      "slot": 37,
+      "sku": "IC BP Black Currant 5 lit. (1x6) - EXPORT",
+      "unlocked": false
+    },
+    {
+      "slot": 38,
+      "sku": "IC BP Butter Scotch 5 lit. (1x6) - ICBPBSC03",
+      "unlocked": false
+    },
+    {
+      "slot": 39,
+      "sku": "IC BP Butter Scotch 5 lit. (1x6) - EXPORT",
+      "unlocked": false
+    },
+    {
+      "slot": 40,
+      "sku": "IC �BP Raj Bhog 5 lit. (1*6) - ICBPRJB11",
+      "unlocked": false
+    },
+    {
+      "slot": 41,
+      "sku": "IC �BP Raj Bhog 5 lit. (1*6) - EXPORT",
+      "unlocked": false
+    }
+  ],
+  "history": [],
+  "settings": {
+    "shifts": [
+      {
+        "id": 1774520571711,
+        "name": "Shift 1",
+        "start": "15:44",
+        "end": "15:54"
+      },
+      {
+        "id": 1774520584279,
+        "name": "Shift 2",
+        "start": "15:54",
+        "end": "15:34"
+      },
+      {
+        "id": 1774519978132,
+        "name": "Shift 3",
+        "start": "15:34",
+        "end": "15:44"
+      }
+    ],
+    "admin_password": "1234",
+    "backup_path": "G:\\Amul\\Ice cream Crate counting"
+  },
+  "dashboard": [
+    {
+      "slot": 1,
+      "sku": "IC BP Afghan Dry Fr. 5 lit. (1x6) - ICBPADF16",
+      "createCount": 0,
+      "batchCode": "70",
+      "looses": 0
+    },
+    {
+      "slot": 2,
+      "sku": "IC BP Black Currant 5 lit. (1x6) - ICBPBCU08",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 3,
+      "sku": "IC BP Black Currant 5 lit. (1x6) - EXPORT",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 4,
+      "sku": "IC BP Butter Scotch 5 lit. (1x6) - ICBPBSC03",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 5,
+      "sku": "IC BP Butter Scotch 5 lit. (1x6) - EXPORT",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 6,
+      "sku": "IC �BP Raj Bhog 5 lit. (1*6) - ICBPRJB11",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 7,
+      "sku": "IC �BP Raj Bhog 5 lit. (1*6) - EXPORT",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 8,
+      "sku": "IC BP Afghan Dry Fr. 5 lit. (1x6) - EXPORT",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 9,
+      "sku": "IC BP Afghan Dry Fr. 5 lit. (1x6) - ICBPADF16",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 10,
+      "sku": "IC BP  Shahi Anjir  5 lit. (1x6) - EXPORT",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 11,
+      "sku": "IC BP Anjir 5 lit. (1x6) - ICBPANJ09",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 12,
+      "sku": "IC BP American Nut 5Lit (1x6) - ICBPAMN52",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 13,
+      "sku": "IC BP Choco Chips 5 lit. (1x6) - ICBPCCH06",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 14,
+      "sku": "IC BP Choco Chips 5 lit. (1x6) - EXPORT",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 15,
+      "sku": "IC BP cookies 'n' cream 5 lit. (1x6) - ICBPCCM42",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 16,
+      "sku": "IC BP cookies 'n' cream 5 lit. (1x6) - EXPORT",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 17,
+      "sku": "IC BP Chocolate Brownie 5 lit. (1x6) - ICBPCHB41",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 18,
+      "sku": "IC BP Chocolate Brownie 5 lit. (1x6) - EXPORT",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 19,
+      "sku": "IC BP Chocolate 5 lit. (1x6) - EXPORT",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 20,
+      "sku": "IC BP Chocolate 5 lit. (1x6) - ICBPCHO02",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 21,
+      "sku": "IC BP American Nut 5Lit (1x6) - EXPORT",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 22,
+      "sku": "IC BP Black Currant 5 lit. (1x6) - ICBPBCU08",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 23,
+      "sku": "IC BP Black Currant 5 lit. (1x6) - EXPORT",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 24,
+      "sku": "IC BP Butter Scotch 5 lit. (1x6) - ICBPBSC03",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 25,
+      "sku": "IC BP Butter Scotch 5 lit. (1x6) - EXPORT",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 26,
+      "sku": "IC �BP Raj Bhog 5 lit. (1*6) - ICBPRJB11",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 27,
+      "sku": "IC �BP Raj Bhog 5 lit. (1*6) - EXPORT",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 28,
+      "sku": "IC BP American Nut 5Lit (1x6) - EXPORT",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 29,
+      "sku": "IC BP Black Currant 5 lit. (1x6) - ICBPBCU08",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 30,
+      "sku": "IC BP Black Currant 5 lit. (1x6) - EXPORT",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 31,
+      "sku": "IC BP Butter Scotch 5 lit. (1x6) - ICBPBSC03",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 32,
+      "sku": "IC BP Butter Scotch 5 lit. (1x6) - EXPORT",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 33,
+      "sku": "IC �BP Raj Bhog 5 lit. (1*6) - ICBPRJB11",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 34,
+      "sku": "IC �BP Raj Bhog 5 lit. (1*6) - EXPORT",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 35,
+      "sku": "IC BP American Nut 5Lit (1x6) - EXPORT",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 36,
+      "sku": "IC BP Black Currant 5 lit. (1x6) - ICBPBCU08",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 37,
+      "sku": "IC BP Black Currant 5 lit. (1x6) - EXPORT",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 38,
+      "sku": "IC BP Butter Scotch 5 lit. (1x6) - ICBPBSC03",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 39,
+      "sku": "IC BP Butter Scotch 5 lit. (1x6) - EXPORT",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 40,
+      "sku": "IC �BP Raj Bhog 5 lit. (1*6) - ICBPRJB11",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    },
+    {
+      "slot": 41,
+      "sku": "IC �BP Raj Bhog 5 lit. (1*6) - EXPORT",
+      "createCount": 0,
+      "batchCode": "",
+      "looses": 0
+    }
+  ]
+}

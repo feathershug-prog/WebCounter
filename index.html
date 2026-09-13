@@ -1,0 +1,2537 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SKU Management System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    :root {
+      --primary: #1a56db;
+      --primary-light: #3b82f6;
+      --primary-dark: #1e3a8a;
+      --bg: #f0f4f8;
+      --sidebar-bg: #0f172a;
+      --sidebar-hover: #1e293b;
+      --card: #ffffff;
+      --text: #1e293b;
+      --text-light: #64748b;
+      --border: #e2e8f0;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+      --radius: 12px
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      min-height: 100vh;
+      overflow: hidden
+    }
+
+    .sidebar {
+      width: 260px;
+      background: var(--sidebar-bg);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      z-index: 100
+    }
+
+    .sidebar-header {
+      padding: 24px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, .08);
+      display: flex;
+      align-items: center;
+      gap: 12px
+    }
+
+    .sidebar-header .logo {
+      width: 40px;
+      height: 40px;
+      background: var(--primary);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 18px
+    }
+
+    .sidebar-header h2 {
+      font-size: 16px;
+      font-weight: 600
+    }
+
+    .sidebar-header span {
+      font-size: 11px;
+      color: var(--text-light);
+      display: block;
+      margin-top: 2px
+    }
+
+    .nav-menu {
+      flex: 1;
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all .2s;
+      color: rgba(255, 255, 255, .65);
+      font-size: 14px;
+      font-weight: 500;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left
+    }
+
+    .nav-item:hover {
+      background: var(--sidebar-hover);
+      color: #fff
+    }
+
+    .nav-item.active {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(26, 86, 219, .4)
+    }
+
+    .nav-item i {
+      width: 20px;
+      text-align: center;
+      font-size: 16px
+    }
+
+    .nav-item.settings-nav {
+      margin-top: auto;
+      border-top: 1px solid rgba(255, 255, 255, .08);
+      padding-top: 16px
+    }
+
+    .main {
+      margin-left: 260px;
+      flex: 1;
+      padding: 24px 32px;
+      overflow-y: auto;
+      height: 100vh
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 10px
+    }
+
+    .page-header h1 {
+      font-size: 24px;
+      font-weight: 700
+    }
+
+    .page-header .subtitle {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-top: 4px
+    }
+
+    .shift-bar {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      background: var(--card);
+      padding: 12px 20px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+      flex-wrap: wrap
+    }
+
+    .shift-bar .badge {
+      background: var(--primary);
+      color: #fff;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600
+    }
+
+    .shift-bar .info {
+      font-size: 13px;
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+      gap: 6px
+    }
+
+    .shift-bar .info i {
+      color: var(--primary)
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
+      margin-bottom: 20px
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px
+    }
+
+    .card-header h3 {
+      font-size: 16px;
+      font-weight: 600
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 13px
+    }
+
+    thead th {
+      background: #f1f5f9;
+      padding: 12px 14px;
+      text-align: left;
+      font-weight: 600;
+      border-bottom: 2px solid var(--border);
+      position: sticky;
+      top: 0;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .5px
+    }
+
+    tbody td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle
+    }
+
+    tbody tr {
+      transition: background .15s
+    }
+
+    tbody tr:hover {
+      background: #f8fafc
+    }
+
+    .btn {
+      padding: 8px 18px;
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: inherit
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(26, 86, 219, .3)
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: #fff
+    }
+
+    .btn-success:hover {
+      background: #059669
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: #fff
+    }
+
+    .btn-danger:hover {
+      background: #dc2626
+    }
+
+    .btn-warning {
+      background: var(--warning);
+      color: #fff
+    }
+
+    .btn-warning:hover {
+      background: #d97706
+    }
+
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 12px
+    }
+
+    .btn-icon {
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      cursor: pointer;
+      transition: all .2s;
+      font-size: 14px
+    }
+
+    .btn-icon:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: scale(1.05)
+    }
+
+    .btn-icon.plus {
+      color: var(--success);
+      border-color: var(--success)
+    }
+
+    .btn-icon.plus:hover {
+      background: var(--success);
+      color: #fff
+    }
+
+    .btn-icon.minus {
+      color: var(--danger);
+      border-color: var(--danger)
+    }
+
+    .btn-icon.minus:hover {
+      background: var(--danger);
+      color: #fff
+    }
+
+    .counter-group {
+      display: flex;
+      align-items: center;
+      gap: 8px
+    }
+
+    .counter-group .count {
+      min-width: 36px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--primary)
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="time"],
+    input[type="date"],
+    input[type="number"],
+    select {
+      padding: 8px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: inherit;
+      transition: border-color .2s;
+      background: #fff;
+      color: var(--text);
+      width: 100%
+    }
+
+    input:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(26, 86, 219, .1)
+    }
+
+    .form-group {
+      margin-bottom: 16px
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: .4px
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .5);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200
+    }
+
+    .modal-overlay.show {
+      display: flex
+    }
+
+    .modal {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 32px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, .2);
+      animation: modalIn .25s ease;
+      max-height: 90vh;
+      overflow-y: auto
+    }
+
+    @keyframes modalIn {
+      from {
+        opacity: 0;
+        transform: scale(.95) translateY(10px)
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0)
+      }
+    }
+
+    .modal h3 {
+      font-size: 18px;
+      margin-bottom: 20px
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 24px
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px
+    }
+
+    .stat-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      border-left: 4px solid var(--primary)
+    }
+
+    .stat-card.green {
+      border-left-color: var(--success)
+    }
+
+    .stat-card.orange {
+      border-left-color: var(--warning)
+    }
+
+    .stat-card.red {
+      border-left-color: var(--danger)
+    }
+
+    .stat-card h4 {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: var(--text-light);
+      margin-bottom: 8px
+    }
+
+    .stat-card .value {
+      font-size: 28px;
+      font-weight: 700
+    }
+
+    .section {
+      display: none
+    }
+
+    .section.active {
+      display: block;
+      animation: fadeIn .3s ease
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    .chart-container {
+      position: relative;
+      height: 300px;
+      margin-bottom: 20px
+    }
+
+    .filter-bar {
+      display: flex;
+      gap: 12px;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      margin-bottom: 20px
+    }
+
+    .filter-bar .form-group {
+      margin: 0
+    }
+
+    .filter-bar select,
+    .filter-bar input {
+      width: auto;
+      min-width: 160px
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600
+    }
+
+    .tag-blue {
+      background: rgba(26, 86, 219, .1);
+      color: var(--primary)
+    }
+
+    .tag-green {
+      background: rgba(16, 185, 129, .1);
+      color: var(--success)
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-light)
+    }
+
+    .empty-state i {
+      font-size: 48px;
+      margin-bottom: 16px;
+      opacity: .3
+    }
+
+    .empty-state p {
+      font-size: 14px
+    }
+
+    .settings-section {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow)
+    }
+
+    .settings-section h4 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px
+    }
+
+    .settings-section h4 i {
+      color: var(--primary)
+    }
+
+    .table-scroll {
+      overflow-x: auto;
+      max-height: 60vh;
+      overflow-y: auto
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--text);
+      color: #fff;
+      padding: 14px 24px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      z-index: 300;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all .3s
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1
+    }
+
+    .toast.success {
+      background: var(--success)
+    }
+
+    .toast.error {
+      background: var(--danger)
+    }
+
+    .lock-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 50vh
+    }
+
+    .lock-screen i {
+      font-size: 56px;
+      color: var(--primary);
+      margin-bottom: 24px;
+      opacity: .5
+    }
+
+    .lock-screen h3 {
+      margin-bottom: 16px;
+      font-size: 20px
+    }
+
+    .lock-screen input {
+      max-width: 280px;
+      text-align: center;
+      margin-bottom: 12px
+    }
+
+    .folder-browser {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      max-height: 300px;
+      overflow-y: auto;
+      margin-bottom: 16px
+    }
+
+    .folder-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      cursor: pointer;
+      border-bottom: 1px solid var(--border);
+      transition: background .15s;
+      font-size: 13px
+    }
+
+    .folder-item:hover {
+      background: #f1f5f9
+    }
+
+    .folder-item i {
+      color: var(--warning);
+      font-size: 16px
+    }
+
+    .folder-path {
+      padding: 8px 12px;
+      background: #f1f5f9;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-light);
+      border-bottom: 1px solid var(--border);
+      word-break: break-all
+    }
+
+    /* Enhanced Manager Setup */
+    .manager-container {
+      display: grid;
+      grid-template-columns: 220px 1fr 300px;
+      gap: 20px;
+      height: calc(100vh - 180px);
+      min-height: 500px;
+    }
+
+    .panel {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .panel-header {
+      padding: 14px 18px;
+      background: #f8fafc;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .panel-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+    }
+
+    .cat-item {
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all .2s;
+      font-size: 13px;
+      margin-bottom: 2px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-light);
+      border: 1px solid transparent;
+    }
+
+    .cat-item:hover {
+      background: #f1f5f9;
+      color: var(--primary);
+    }
+
+    .cat-item.active {
+      background: var(--primary);
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .sku-search-box {
+      padding: 12px;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sku-grid-item {
+      display: flex;
+      align-items: center;
+      padding: 10px 16px;
+      border-bottom: 1px solid #f1f5f9;
+      gap: 12px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .sku-grid-item:hover {
+      background: #f8fafc;
+    }
+
+    .sku-grid-item.selected-row {
+      background: rgba(26, 86, 219, 0.04);
+    }
+
+    .sku-grid-item input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+
+    .sku-info {
+      flex: 1;
+      pointer-events: none;
+    }
+
+    .sku-info small {
+      color: var(--text-light);
+      display: block;
+      font-size: 11px;
+      margin-top: 1px;
+    }
+
+    .cart-item {
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 8px;
+      background: #fff;
+      font-size: 12px;
+    }
+
+    .cart-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 6px;
+    }
+
+    .cart-item-title {
+      font-weight: 600;
+      flex: 1;
+    }
+
+    .cart-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .qty-input {
+      width: 70px !important;
+      padding: 4px 8px !important;
+      height: 32px !important;
+    }
+
+    .panel-footer {
+      padding: 16px;
+      border-top: 1px solid var(--border);
+      background: #f8fafc;
+    }
+
+    /* Admin Locked Mode Security UI */
+    body.locked-mode .sku-checkbox,
+    body.locked-mode .slot-checkbox,
+    body.locked-mode #selectAllSkus,
+    body.locked-mode #selectAllSlots,
+    body.locked-mode #bulkDeleteSkuBtn,
+    body.locked-mode #bulkDeleteSlotBtn {
+      display: none !important;
+    }
+  </style>
+</head>
+
+<body class="locked-mode">
+
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">I</div>
+      <div>
+        <h2>IceCream Coldroom Storage Manager </h2>
+        <div style="font-size:10px; color:rgba(255,255,255,0.7)"><a href="https://naushadwork.netlify.app"
+            target="_blank" style="color:#fff; font-weight:600; text-decoration:none"></a></div>
+      </div>
+    </div>
+    <div class="nav-menu">
+      <button class="nav-item active" data-section="dashboard"><i class="fas fa-tachometer-alt"></i>Dashboard</button>
+      <button class="nav-item" data-section="manager-setup"><i class="fas fa-user-tie"></i>Manager Setup</button>
+      <button class="nav-item" data-section="sku-master"><i class="fas fa-boxes-stacked"></i>SKU Master</button>
+      <button class="nav-item" data-section="history"><i class="fas fa-clock-rotate-left"></i>History</button>
+      <button class="nav-item" data-section="factory-dashboard"><i class="fas fa-industry"></i>Factory
+        Dashboard</button>
+      <button class="nav-item" data-section="production-pivot"><i class="fas fa-chart-pie"></i>Production Pivot</button>
+      <button class="nav-item" data-section="defective-items"><i class="fas fa-exclamation-triangle"></i>Defect Items</button>
+      <button class="nav-item settings-nav" data-section="settings"><i class="fas fa-cog"></i>Settings</button>
+    </div>
+  </nav>
+
+  <div class="main">
+
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="section active">
+      <div class="page-header">
+        <div>
+          <h1>Dashboard</h1>
+          <p class="subtitle">Real-time production tracking</p>
+        </div>
+      </div>
+      <div class="shift-bar">
+        <span class="badge" id="currentShift">Loading...</span>
+        <span class="info"><i class="fas fa-calendar"></i><span id="currentDate"></span></span>
+        <span class="info"><i class="fas fa-clock"></i><span id="currentTime"></span></span>
+      </div>
+      <div class="stats-grid" id="dashStats"></div>
+      <div class="card">
+        <div class="card-header">
+          <h3>Production Slots</h3>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Slot</th>
+                <th>Active SKU</th>
+                <th>Create Count</th>
+                <th>Batch Code</th>
+                <th>Liters</th>
+                <th>Pieces</th>
+                <th>Looses</th>
+              </tr>
+            </thead>
+            <tbody id="dashboardBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- MANAGER SETUP -->
+    <div id="manager-setup" class="section">
+      <div class="page-header">
+        <div>
+          <h1>Manager Setup</h1>
+          <p class="subtitle" id="mgrSubtitle">Enhanced SKU assignment system</p>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-warning unlock-mode-btn" onclick="toggleGlobalUnlock()"><i
+              class="fas fa-lock"></i>Unlock System</button>
+          <button class="btn btn-warning" id="toggleMgrBtn" onclick="toggleManagerView()"><i
+              class="fas fa-list"></i>Current Slots</button>
+          <button class="btn btn-danger" onclick="requirePassword(clearAllManagerSlots)"><i
+              class="fas fa-trash"></i>Clear Dashboard</button>
+        </div>
+      </div>
+
+      <!-- ENHANCED UI -->
+      <div id="enhancedMgrUI" class="manager-container">
+        <!-- Categories -->
+        <div class="panel">
+          <div class="panel-header">Categories</div>
+          <div class="panel-body" id="mgrCatList"></div>
+        </div>
+        <!-- SKU Selector -->
+        <div class="panel">
+          <div class="sku-search-box" style="display:flex; gap:8px">
+            <input type="text" id="mgrSearchInput" placeholder="Search globally or filter by category..."
+              oninput="debounceMgrSearch()" style="flex:1">
+            <button class="btn btn-sm btn-success" onclick="selectAllMgrSkus()" style="padding:0 12px"
+              title="Select All Matches"><i class="fas fa-check-double"></i></button>
+          </div>
+          <div class="panel-body" id="mgrSkuList" style="padding:0"></div>
+        </div>
+        <!-- Cart -->
+        <div class="panel">
+          <div class="panel-header">
+            Bulk Selection
+            <button class="btn btn-sm btn-icon" onclick="managerCart=[] ; renderMgrCart()" title="Clear Selection"><i
+                class="fas fa-rotate-left"></i></button>
+          </div>
+          <div class="panel-body" id="mgrCartItems"></div>
+          <div class="panel-footer">
+            <button class="btn btn-primary" style="width:100%; justify-content:center" onclick="submitBulkSlots()">
+              <i class="fas fa-plus"></i>Add Selected to Slots
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- LEGACY TABLE VIEW (Hidden by default) -->
+      <div id="legacyMgrUI" class="card" style="display:none">
+        <div class="page-header" style="margin-bottom:16px;">
+          <button class="btn btn-danger" id="bulkDeleteSlotBtn" style="display:none"
+            onclick="requirePassword(deleteSelectedSlots, true)"><i class="fas fa-trash"></i>Delete Selected
+            Slots</button>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:40px"><input type="checkbox" id="selectAllSlots" onclick="toggleAllSlots(this)"></th>
+                <th>Slot</th>
+                <th>Running SKU</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="managerBody"></tbody>
+          </table>
+        </div>
+        <div style="margin-top:16px"><button class="btn btn-primary" onclick="addManagerSlot()"><i
+              class="fas fa-plus"></i>Add Manual Slot</button></div>
+      </div>
+    </div>
+
+    <!-- SKU MASTER -->
+    <div id="sku-master" class="section">
+      <div class="page-header">
+        <div>
+          <h1>SKU Master</h1>
+          <p class="subtitle">Manage product definitions</p>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-warning unlock-mode-btn" onclick="toggleGlobalUnlock()"><i
+              class="fas fa-lock"></i>Unlock System</button>
+          <button class="btn btn-danger" id="bulkDeleteSkuBtn" style="display:none"
+            onclick="requirePassword(deleteSelectedSkus, true)"><i class="fas fa-trash"></i>Delete Selected</button>
+          <button class="btn btn-warning" onclick="openUploadModal()"><i class="fas fa-upload"></i>Upload CSV</button>
+          <button class="btn btn-success" onclick="openCategoryModal()"><i class="fas fa-tags"></i>Categories</button>
+          <button class="btn btn-primary" onclick="openSkuModal()"><i class="fas fa-plus"></i>Add SKU</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:40px"><input type="checkbox" id="selectAllSkus" onclick="toggleAllSkus(this)"></th>
+                <th>Material Description</th>
+                <th>Material Code</th>
+                <th>Combine</th>
+                <th>Liters/Crate</th>
+                <th>Pieces/Crate</th>
+                <th>Liters/Piece</th>
+                <th>Category</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="skuBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- HISTORY -->
+    <div id="history" class="section">
+      <div class="page-header">
+        <div>
+          <h1>History</h1>
+          <p class="subtitle">Immutable production logs</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Shift</th>
+                <th>Slot</th>
+                <th>SKU</th>
+                <th>Batch Code</th>
+                <th>Crates</th>
+                <th>Liters</th>
+                <th>Pieces</th>
+                <th>Looses</th>
+              </tr>
+            </thead>
+            <tbody id="historyBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- FACTORY DASHBOARD -->
+    <div id="factory-dashboard" class="section">
+      <div class="page-header">
+        <div>
+          <h1>Factory Dashboard</h1>
+          <p class="subtitle">Aggregated production overview</p>
+        </div>
+      </div>
+      <div class="filter-bar">
+        <div class="form-group"><label>Date From</label><input type="date" id="factoryDateFrom"></div>
+        <div class="form-group"><label>Date To</label><input type="date" id="factoryDateTo"></div>
+        <div class="form-group"><label>Shift</label><select id="factoryShiftFilter"><option value="">All Shifts</option></select></div>
+        <button class="btn btn-primary" onclick="renderFactory()" style="margin-bottom:0"><i class="fas fa-filter"></i>Apply</button>
+      </div>
+      <div class="stats-grid" id="factoryStats"></div>
+      <div class="card">
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>SKU</th>
+                <th>Batch Code</th>
+                <th>Total Crates</th>
+                <th>Total Liters</th>
+              </tr>
+            </thead>
+            <tbody id="factoryBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCTION PIVOT -->
+    <div id="production-pivot" class="section">
+      <div class="page-header">
+        <div>
+          <h1>Production Pivot</h1>
+          <p class="subtitle">Analytics and insights</p>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-success" onclick="exportPivotCSV()"><i class="fas fa-file-csv"></i>Export CSV</button>
+          <button class="btn btn-danger" onclick="exportPivotPDF()"><i class="fas fa-file-pdf"></i>Export PDF</button>
+        </div>
+      </div>
+      <div class="filter-bar">
+        <div class="form-group"><label>Date From</label><input type="date" id="pivotDateFrom"></div>
+        <div class="form-group"><label>Date To</label><input type="date" id="pivotDateTo"></div>
+        <div class="form-group"><label>Shift</label><select id="pivotShiftFilter">
+            <option value="">All Shifts</option>
+          </select></div>
+        <div class="form-group"><label>SKU</label><select id="pivotSkuFilter">
+            <option value="">All SKUs</option>
+          </select></div>
+        <button class="btn btn-primary" onclick="applyPivotFilter()" style="margin-bottom:0"><i
+            class="fas fa-filter"></i>Apply</button>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px">
+        <div class="card">
+          <h3 style="margin-bottom:12px">Crates by SKU</h3>
+          <div class="chart-container"><canvas id="barChart"></canvas></div>
+        </div>
+        <div class="card">
+          <h3 style="margin-bottom:12px">Production Distribution</h3>
+          <div class="chart-container"><canvas id="pieChart"></canvas></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:12px">Production Trend</h3>
+        <div class="chart-container"><canvas id="lineChart"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h3>Data Table</h3>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>SKU</th>
+                <th>Batch</th>
+                <th>Crates</th>
+                <th>Liters</th>
+                <th>Pieces</th>
+              </tr>
+            </thead>
+            <tbody id="pivotBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- DEFECTIVE ITEMS -->
+    <div id="defective-items" class="section">
+      <div class="page-header">
+        <div>
+          <h1>Defective Items & Deductions</h1>
+          <p class="subtitle">Record damages and modify production history securely</p>
+        </div>
+      </div>
+      <div class="filter-bar">
+        <div class="form-group"><label>Date</label><input type="date" id="defectDate"></div>
+        <div class="form-group"><label>SKU</label><input type="text" id="defectSku" placeholder="Type or paste SKU text"></div>
+        <div class="form-group"><label>Batch Code</label><input type="text" id="defectBatch" placeholder="MANDATORY batch filter"></div>
+        <button class="btn btn-primary" onclick="searchDefectiveItems()" style="margin-bottom:0"><i class="fas fa-search"></i>Search</button>
+      </div>
+      
+      <div class="card">
+        <div class="card-header">
+          <h3>Production Results</h3>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Shift</th>
+                <th>Slot</th>
+                <th>SKU</th>
+                <th>Crates</th>
+                <th>Looses</th>
+                <th style="width:180px">Adjust Tools</th>
+              </tr>
+            </thead>
+            <tbody id="defectResultsBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:20px;">
+        <div class="card-header">
+          <h3>Adjustment & Defect Logs</h3>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Time</th>
+                <th>SKU</th>
+                <th>Batch</th>
+                <th>Type</th>
+                <th>Diff</th>
+                <th>Reason</th>
+              </tr>
+            </thead>
+            <tbody id="defectLogsBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div id="settings" class="section">
+      <div id="settingsLock" class="lock-screen">
+        <i class="fas fa-lock"></i>
+        <h3>Admin Access Required</h3>
+        <input type="password" id="adminPwdInput" placeholder="Enter admin password"
+          onkeydown="if(event.key==='Enter')unlockSettings()">
+        <button class="btn btn-primary" onclick="unlockSettings()">Unlock</button>
+      </div>
+      <div id="settingsContent" style="display:none">
+        <div class="page-header">
+          <div>
+            <h1>Settings</h1>
+            <p class="subtitle">System configuration</p>
+          </div>
+        </div>
+        <div class="settings-section">
+          <h4><i class="fas fa-clock"></i>Shift Management</h4>
+          <button class="btn btn-primary btn-sm" onclick="openShiftModal()" style="margin-bottom:12px"><i
+              class="fas fa-plus"></i>Add Shift</button>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Reset Time</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="shiftBody"></tbody>
+          </table>
+        </div>
+        <div class="settings-section">
+          <h4><i class="fas fa-key"></i>Change Admin Password</h4>
+          <div style="display:flex;gap:10px;max-width:400px">
+            <input type="password" id="newPwd" placeholder="New password">
+            <button class="btn btn-primary" onclick="changePassword()">Update</button>
+          </div>
+        </div>
+        <div class="settings-section">
+          <h4><i class="fas fa-folder"></i>Backup Path</h4>
+          <p style="font-size:12px;color:var(--text-light);margin-bottom:12px">Select a folder where backup will be
+            saved automatically.</p>
+          <div style="display:flex;gap:10px;max-width:600px;align-items:center">
+            <input type="text" id="backupPath" placeholder="Click Browse to select folder" readonly
+              style="background:#f8fafc">
+            <button class="btn btn-primary" onclick="openFolderBrowser()"><i
+                class="fas fa-folder-open"></i>Browse</button>
+            <button class="btn btn-success" onclick="saveBackupPath()">Save</button>
+          </div>
+        </div>
+        <div class="settings-section">
+          <h4><i class="fas fa-download"></i>Export Reports (All Data)</h4>
+          <div style="display:flex;gap:10px">
+            <button class="btn btn-success" onclick="window.open('/api/export/csv')"><i
+                class="fas fa-file-csv"></i>Export CSV</button>
+            <button class="btn btn-danger" onclick="window.open('/api/export/pdf')"><i
+                class="fas fa-file-pdf"></i>Export PDF</button>
+          </div>
+        </div>
+        <!-- HARD RESET BUTTON (FOR TESTING) -->
+        <div class="settings-section"
+          style="border-left: 4px solid var(--danger); background: rgba(239, 68, 68, 0.03);">
+          <h4 style="color: var(--danger);"><i class="fas fa-exclamation-triangle"></i>Test Tools: Hard Reset</h4>
+          <p style="font-size:12px;color:var(--text-light);margin-bottom:12px">Warning: This will delete ALL database
+            tables (SKUs, History, Slots) and reset settings to default. Use only for testing purposes.</p>
+          <button class="btn btn-danger" onclick="requirePassword(hardResetApp)"><i class="fas fa-bomb"></i>Hard Reset
+            All Data</button>
+        </div>
+        <!-- ABOUT SYSTEM -->
+        <div class="settings-section">
+          <h4><i class="fas fa-info-circle"></i>About System</h4>
+          <p style="font-size:12px;color:var(--text-light);margin-bottom:12px">View development info and system version.
+          </p>
+          <button class="btn btn-primary" onclick="openModal('aboutModal')"><i class="fas fa-question-circle"></i>About
+          </button>
+        </div>
+      </div>
+      <footer
+        style="text-align:center; padding:20px; border-top:1px solid var(--border); margin-top:20px; font-size:12px; color:var(--text-light)">
+        <a href="https://naushadwork.netlify.app" target="_blank"
+          style="color:var(--primary); font-weight:600; text-decoration:none"></a>
+      </footer>
+    </div>
+  </div>
+
+  <!-- MODALS -->
+  <div class="modal-overlay" id="skuModal">
+    <div class="modal">
+      <h3 id="skuModalTitle">Add SKU</h3>
+      <input type="hidden" id="skuEditIdx" value="-1">
+      <div class="form-group"><label>Material Description</label><input type="text" id="skuDesc"></div>
+      <div class="form-group"><label>Material Code</label><input type="text" id="skuCode"></div>
+      <div class="form-group"><label>Combine (Auto)</label><input type="text" id="skuCombine" readonly
+          style="background:#f1f5f9"></div>
+      <div class="form-group"><label>Liters per Crate</label><input type="number" id="skuLiters" step="any" min="0">
+      </div>
+      <div class="form-group"><label>Pieces per Crate</label><input type="number" id="skuPieces" step="any" min="0">
+      </div>
+      <div class="form-group"><label>Liters per Piece</label><input type="number" id="skuLpp" step="any" min="0"></div>
+      <div class="form-group"><label>Category</label><select id="skuCategory"></select></div>
+      <div class="modal-actions"><button class="btn" onclick="closeModal('skuModal')">Cancel</button><button
+          class="btn btn-primary" onclick="saveSku()">Save</button></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="categoryModal">
+    <div class="modal">
+      <h3>Manage Categories</h3>
+      <div style="display:flex;gap:10px;margin-bottom:16px"><input type="text" id="newCatInput"
+          placeholder="New category name"><button class="btn btn-primary" onclick="addCategory()">Add</button></div>
+      <div id="categoryList"></div>
+      <div class="modal-actions"><button class="btn btn-primary" onclick="closeModal('categoryModal')">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="shiftModal">
+    <div class="modal">
+      <h3 id="shiftModalTitle">Add Shift</h3>
+      <input type="hidden" id="shiftEditIdx" value="-1">
+      <div class="form-group"><label>Shift Name</label><input type="text" id="shiftName"></div>
+      <div class="form-group"><label>Start Time</label><input type="time" id="shiftStart"></div>
+      <div class="form-group"><label>End Time</label><input type="time" id="shiftEnd"></div>
+      <div class="form-group"><label>Reset Time (Dashboard to 0)</label><input type="time" id="shiftReset"></div>
+      <div class="modal-actions"><button class="btn" onclick="closeModal('shiftModal')">Cancel</button><button
+          class="btn btn-primary" onclick="saveShift()">Save</button></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="passwordModal">
+    <div class="modal">
+      <h3><i class="fas fa-lock" style="color:var(--danger);margin-right:8px"></i>Admin Verification</h3>
+      <p style="font-size:13px;color:var(--text-light);margin-bottom:16px">Enter admin password to confirm this action.
+      </p>
+      <div class="form-group"><label>Password</label><input type="password" id="actionPwd"
+          placeholder="Enter admin password" onkeydown="if(event.key==='Enter')confirmPasswordAction()"></div>
+      <div class="modal-actions"><button class="btn"
+          onclick="closeModal('passwordModal');pendingAction=null;">Cancel</button><button class="btn btn-danger"
+          onclick="confirmPasswordAction()">Confirm</button></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="uploadModal">
+    <div class="modal">
+      <h3><i class="fas fa-upload" style="color:var(--warning);margin-right:8px"></i>Upload SKU CSV</h3>
+      <p style="font-size:13px;color:var(--text-light);margin-bottom:16px">First download the sample template, fill in
+        your SKU data, then upload.</p>
+      <div style="text-align:center;margin-bottom:20px">
+        <button class="btn btn-primary" onclick="window.open('/api/sample-csv')"><i class="fas fa-download"></i>Download
+          Sample CSV Template</button>
+      </div>
+      <div class="form-group"><label>Select CSV File</label>
+        <input type="file" id="csvFileInput" accept=".csv"
+          style="padding:10px;border:2px dashed var(--border);border-radius:8px;width:100%;background:#f8fafc">
+      </div>
+      <div class="modal-actions"><button class="btn" onclick="closeModal('uploadModal')">Cancel</button><button
+          class="btn btn-success" onclick="uploadCsv()"><i class="fas fa-upload"></i>Upload & Import</button></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="catSlotModal">
+    <div class="modal">
+      <h3><i class="fas fa-layer-group" style="color:var(--warning);margin-right:8px"></i>Add Slots by Category</h3>
+      <p style="font-size:13px;color:var(--text-light);margin-bottom:16px">This will automatically create a slot for
+        every SKU in the selected category.</p>
+      <div class="form-group"><label>Select Category</label><select id="catSlotSelect"></select></div>
+      <div class="modal-actions"><button class="btn" onclick="closeModal('catSlotModal')">Cancel</button><button
+          class="btn btn-primary" onclick="addSlotsByCategory()">Add Slots</button></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="aboutModal">
+    <div class="modal" style="text-align:center">
+      <div style="font-size:40px; color:var(--primary); margin-bottom:15px"><i class="fas fa-microchip"></i></div>
+      <h3>IceCream Coldroom Storage Manager</h3>
+      <div style="color:var(--text-light); font-size:13px; margin:15px 0">
+        <p><strong>Version:</strong> 1.0 (Stable)</p>
+        <p><strong>Developed by:</strong> Shaikh Naushad Ibrahim</p>
+        <p style="margin-top:10px">A high-precision inventory tracking and production management solution with SQLite
+          backend, real-time analytics, and bulk SKU management.</p>
+      </div>
+      <div
+        style="background:#f8fafc; padding:15px; border-radius:12px; text-align:left; font-size:12px; margin-bottom:20px">
+        <p style="margin-bottom:5px"><strong>Key Technologies:</strong></p>
+        <p>• Node.js Backend</p>
+        <p>• SQLite Database (High Reliability)</p>
+        <p>• PDF/CSV Advanced Reporting</p>
+        <p>• LAN Multi-User Access Supported</p>
+      </div>
+      <div class="modal-actions" style="justify-content:center">
+        <button class="btn btn-primary" onclick="closeModal('aboutModal')">Close Interface</button>
+      </div>
+      <div style="margin-top:20px; font-size:11px; color:var(--text-light)">
+        Visit Developer: <a href="https://naushadwork.netlify.app" target="_blank"
+          style="color:var(--primary); font-weight:600">naushadwork.netlify.app</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="folderModal">
+    <div class="modal" style="max-width:550px">
+      <h3><i class="fas fa-folder-open" style="color:var(--warning);margin-right:8px"></i>Select Backup Folder</h3>
+      <div class="folder-path" id="folderCurrentPath"></div>
+      <div class="folder-browser" id="folderList"></div>
+      <div class="modal-actions">
+        <button class="btn" onclick="closeModal('folderModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="selectCurrentFolder()"><i class="fas fa-check"></i>Select This
+          Folder</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="defectModal">
+    <div class="modal">
+      <h3><i class="fas fa-tools" style="color:var(--primary);margin-right:8px"></i>Record Defect / Adjustment</h3>
+      <p style="font-size:13px;color:var(--text-light);margin-bottom:16px">Adjusting <strong id="defectActionType"></strong> for SKU: <strong id="defectActionSku"></strong></p>
+      <input type="hidden" id="defectRecordIndex">
+      <input type="hidden" id="defectFieldType">
+      
+      <div class="form-group" style="margin-bottom:20px;">
+        <label>Adjustment Amount (Enter negative value like -1 to subtract defects)</label>
+        <input type="number" id="defectAmount" value="-1" style="font-size:16px; font-weight:bold; text-align:center; max-width:150px;">
+      </div>
+      
+      <div class="form-group">
+        <label>Reason Configuration (MANDATORY)</label>
+        <input type="text" id="defectReason" placeholder="Please enter reason exactly e.g. '2 crates damaged in freezer'" style="width:100%">
+      </div>
+      
+      <div class="modal-actions">
+        <button class="btn" onclick="closeModal('defectModal')">Cancel Action</button>
+        <button class="btn btn-danger" onclick="confirmDefectAdjustment()">Securely Save Change</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="catContextMenu"
+    style="display:none; position:fixed; background:var(--card); border:1px solid var(--border); box-shadow:var(--shadow); z-index:9999; border-radius:8px; padding:4px; min-width:150px;">
+    <div class="folder-item" style="color:var(--danger); cursor:pointer;" onclick="executeCatCtxDeleteAll()">
+      <i class="fas fa-trash" style="margin-right:8px;"></i> Delete All SKUs
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    let APP = { sku_master: [], categories: [], manager_setup: [], dashboard: [], history: [], defects: [], settings: { shifts: [], admin_password: '1234', backup_path: '' } };
+    let barChart, pieChart, lineChart;
+    let settingsUnlocked = false;
+    let globalAdminUnlocked = false;
+    let pendingAction = null;
+    let currentBrowsePath = '';
+
+    function toggleGlobalUnlock() {
+      if (globalAdminUnlocked) {
+        globalAdminUnlocked = false;
+        updateUnlockBtn();
+        showToast('System Locked');
+      } else {
+        pendingAction = () => {
+          globalAdminUnlocked = true;
+          updateUnlockBtn();
+          showToast('System Unlocked for session');
+        };
+        document.getElementById('actionPwd').value = '';
+        openModal('passwordModal');
+      }
+    }
+
+    function updateUnlockBtn() {
+      if (globalAdminUnlocked) {
+        document.body.classList.remove('locked-mode');
+      } else {
+        document.body.classList.add('locked-mode');
+        // Instantly uncheck and hide all dangerous multi-select options when locking
+        document.querySelectorAll('.sku-checkbox, .slot-checkbox, #selectAllSkus, #selectAllSlots').forEach(c => c.checked = false);
+        if (typeof updateBulkDeleteBtn === 'function') updateBulkDeleteBtn();
+        if (typeof updateBulkDeleteSlotBtn === 'function') updateBulkDeleteSlotBtn();
+      }
+
+      const btns = document.querySelectorAll('.unlock-mode-btn');
+      btns.forEach(btn => {
+        if (globalAdminUnlocked) {
+          btn.innerHTML = '<i class="fas fa-unlock"></i>System Unlocked';
+          btn.classList.add('btn-success');
+          btn.classList.remove('btn-warning');
+        } else {
+          btn.innerHTML = '<i class="fas fa-lock"></i>Unlock System';
+          btn.classList.remove('btn-success');
+          btn.classList.add('btn-warning');
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => { loadData(); startClock(); setupNav(); setupCombineAuto(); });
+
+    function setupNav() {
+      document.querySelectorAll('.nav-item').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (globalAdminUnlocked) {
+            globalAdminUnlocked = false;
+            updateUnlockBtn();
+          }
+          document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+          document.getElementById(btn.dataset.section).classList.add('active');
+          const sec = btn.dataset.section;
+          if (sec === 'production-pivot') setTimeout(renderPivot, 100);
+          if (sec === 'factory-dashboard') renderFactory();
+          if (sec === 'dashboard') renderDashboard();
+          if (sec === 'history') renderHistory();
+          if (sec === 'defective-items') renderDefectiveItems();
+          if (sec === 'settings' && !settingsUnlocked) { document.getElementById('settingsLock').style.display = 'flex'; document.getElementById('settingsContent').style.display = 'none'; }
+        });
+      });
+    }
+
+    function setupCombineAuto() {
+      ['skuDesc', 'skuCode'].forEach(id => document.getElementById(id).addEventListener('input', () => {
+        const d = document.getElementById('skuDesc').value, c = document.getElementById('skuCode').value;
+        document.getElementById('skuCombine').value = d && c ? d + ' - ' + c : '';
+      }));
+    }
+
+    /* DATA */
+    async function loadData() {
+      try { 
+        const r = await fetch('/api/data'); 
+        APP = await r.json(); 
+        APP.categories = APP.categories || []; 
+        APP.defects = APP.defects || [];
+      } catch (e) { console.error(e); }
+      renderAll();
+    }
+    async function saveData() {
+      const payload = { ...APP };
+      delete payload.history; // Never send history back, backend uses SQL UPSERT exclusively for it
+      try { await fetch('/api/data', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); } catch (e) { showToast('Save failed!', 'error'); }
+    }
+
+    /* HARD RESET */
+    async function hardResetApp() {
+      if (!confirm("DANGER: This will delete ALL SKUs, categories, history, and dashboard data. This cannot be undone. Proceed?")) return;
+      try {
+        const r = await fetch('/api/hard-reset', { method: 'POST' });
+        const res = await r.json();
+        if (res.success) {
+          showToast('Database reset successful!', 'success');
+          setTimeout(() => window.location.reload(), 1500);
+        } else {
+          showToast('Reset failed: ' + res.error, 'error');
+        }
+      } catch (e) { showToast('Reset error', 'error'); }
+    }
+
+    /* TOAST */
+    function showToast(msg, type = 'success') { const t = document.getElementById('toast'); t.textContent = msg; t.className = 'toast show ' + type; setTimeout(() => t.className = 'toast', 3000); }
+
+    /* CLOCK & SHIFT RESET */
+    let shiftResetTriggered = false;
+
+    function startClock() {
+      function update() {
+        const now = new Date();
+        document.getElementById('currentDate').textContent = now.toLocaleDateString('en-IN', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
+        document.getElementById('currentTime').textContent = now.toLocaleTimeString('en-IN');
+
+        const currentShift = getCurrentShiftName(now);
+        document.getElementById('currentShift').textContent = currentShift;
+
+        // Auto reset based on Counter Reset Management timings
+        checkCounterResets(now);
+      }
+      update(); setInterval(update, 500);
+    }
+ 
+    let lastResetTimeKey = '';
+    function checkCounterResets(now) {
+      if (!APP.settings.shifts || !APP.settings.shifts.length) return;
+ 
+      const currentH = now.getHours();
+      const currentM = now.getMinutes();
+      const currentD = now.toDateString();
+      const timeKey = `${currentD}-${currentH}:${currentM}`;
+ 
+      // If we've already handled this specific minute, skip.
+      if (timeKey === lastResetTimeKey) return;
+ 
+      for (const s of APP.settings.shifts) {
+        if (!s.resetTime) continue;
+        const [rh, rm] = s.resetTime.split(':').map(Number);
+ 
+        // Trigger as soon as the current time matches the reset minute
+        if (currentH === rh && currentM === rm) {
+          lastResetTimeKey = timeKey;
+          resetDashboardForNewShift();
+          break;
+        }
+      }
+    }
+
+    function resetDashboardForNewShift() {
+      if (APP.dashboard && APP.dashboard.length) {
+        APP.dashboard.forEach((d, i) => {
+          if (d.createCount > 0 || d.looses > 0) {
+            syncHistory(i, true); // save final state
+          }
+          d.createCount = 0;
+          d.looses = 0;
+          // keep batch code intact
+        });
+        saveData();
+        if (document.getElementById('dashboard').classList.contains('active')) {
+          renderDashboard();
+        }
+        showToast('Shift Ended! Dashboard reset.', 'success');
+      }
+    }
+
+    function getCurrentShiftName(now = new Date()) {
+      const mins = now.getHours() * 60 + now.getMinutes();
+      for (const s of (APP.settings.shifts || [])) {
+        const [sh, sm] = s.start.split(':').map(Number), [eh, em] = s.end.split(':').map(Number);
+        const start = sh * 60 + sm, end = eh * 60 + em;
+        if (start < end) { if (mins >= start && mins < end) return s.name; } else { if (mins >= start || mins < end) return s.name; }
+      }
+      return 'No Shift';
+    }
+
+    /* RENDER ALL */
+    function renderAll() { 
+      renderDashboard(); 
+      renderManager(); 
+      renderSku(); 
+      renderHistory(); 
+      renderFactory(); 
+      renderShifts(); 
+      renderDefectLogs();
+      document.getElementById('backupPath').value = APP.settings.backup_path || ''; 
+    }
+
+    /* MODALS */
+    function openModal(id) { document.getElementById(id).classList.add('show'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+
+    /* PASSWORD PROTECTION */
+    function requirePassword(action, force = false) {
+      if (globalAdminUnlocked && !force) {
+        action();
+        return;
+      }
+      pendingAction = action;
+      document.getElementById('actionPwd').value = '';
+      openModal('passwordModal');
+    }
+    async function confirmPasswordAction() {
+      const pwd = document.getElementById('actionPwd').value;
+      try {
+        const r = await fetch('/api/verify-password', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: pwd }) });
+        const result = await r.json();
+        if (result.valid) { closeModal('passwordModal'); if (pendingAction) pendingAction(); pendingAction = null; }
+        else { showToast('Invalid password!', 'error'); }
+      } catch (e) { showToast('Verification failed', 'error'); }
+    }
+
+    /* SKU MASTER */
+    let contextMenuCat = '';
+    document.addEventListener('click', () => {
+      const menu = document.getElementById('catContextMenu');
+      if (menu) menu.style.display = 'none';
+    });
+
+    function handleCatRightClick(e, catName) {
+      e.preventDefault();
+      contextMenuCat = catName;
+      const menu = document.getElementById('catContextMenu');
+      menu.style.display = 'block';
+      let x = e.clientX, y = e.clientY;
+      menu.style.left = x + 'px';
+      menu.style.top = y + 'px';
+    }
+
+    function executeCatCtxDeleteAll() {
+      if (!contextMenuCat) return;
+      requirePassword(() => {
+        const initialCount = APP.sku_master.length;
+        APP.sku_master = APP.sku_master.filter(s => s.category !== contextMenuCat);
+        const deletedCount = initialCount - APP.sku_master.length;
+        saveData();
+        renderSku();
+        renderManager();
+        showToast(`Deleted ${deletedCount} SKUs from category '${contextMenuCat}'`);
+      }, true);
+    }
+
+    function renderSku() {
+      const tb = document.getElementById('skuBody'); tb.innerHTML = '';
+      const selectAllEl = document.getElementById('selectAllSkus');
+      if (selectAllEl) selectAllEl.checked = false;
+      updateBulkDeleteBtn();
+      if (!APP.sku_master.length) { tb.innerHTML = '<tr><td colspan="9" class="empty-state"><p>No SKUs yet. Click "Add SKU" to start.</p></td></tr>'; return; }
+      APP.sku_master.forEach((s, i) => {
+        tb.innerHTML += `<tr>
+          <td><input type="checkbox" class="sku-checkbox" value="${i}" onchange="updateBulkDeleteBtn()"></td>
+          <td>${s.description}</td><td>${s.code}</td><td><span class="tag tag-blue">${s.combine}</span></td><td>${s.litersPerCrate}</td><td>${s.piecesPerCrate}</td><td>${s.litersPerPiece || 0}</td><td>${s.category || '-'}</td><td><button class="btn-icon" onclick="editSku(${i})"><i class="fas fa-pen"></i></button> <button class="btn-icon minus" onclick="requirePassword(()=>deleteSku(${i}))"><i class="fas fa-trash"></i></button></td></tr>`;
+      });
+    }
+
+    function toggleAllSkus(cb) {
+      const cbs = document.querySelectorAll('.sku-checkbox');
+      cbs.forEach(c => c.checked = cb.checked);
+      updateBulkDeleteBtn();
+    }
+
+    function updateBulkDeleteBtn() {
+      const cbs = document.querySelectorAll('.sku-checkbox:checked');
+      const btn = document.getElementById('bulkDeleteSkuBtn');
+      if (btn) {
+        if (cbs.length > 0) {
+          btn.style.display = 'inline-flex';
+          btn.innerHTML = `<i class="fas fa-trash"></i>Delete Selected (${cbs.length})`;
+        } else {
+          btn.style.display = 'none';
+        }
+      }
+    }
+
+    function deleteSelectedSkus() {
+      const cbs = document.querySelectorAll('.sku-checkbox:checked');
+      const indices = Array.from(cbs).map(c => parseInt(c.value)).sort((a, b) => b - a);
+      if (indices.length === 0) return;
+      indices.forEach(i => APP.sku_master.splice(i, 1));
+      saveData();
+      renderSku();
+      renderManager();
+      showToast(`Deleted ${indices.length} SKUs`);
+    }
+    function openSkuModal(idx = -1) {
+      document.getElementById('skuEditIdx').value = idx;
+      document.getElementById('skuModalTitle').textContent = idx === -1 ? 'Add SKU' : 'Edit SKU';
+      const cats = document.getElementById('skuCategory'); cats.innerHTML = '<option value="">Select Category</option>';
+      (APP.categories || []).forEach(c => cats.innerHTML += `<option value="${c}">${c}</option>`);
+      if (idx >= 0) { const s = APP.sku_master[idx]; document.getElementById('skuDesc').value = s.description; document.getElementById('skuCode').value = s.code; document.getElementById('skuCombine').value = s.combine; document.getElementById('skuLiters').value = s.litersPerCrate; document.getElementById('skuPieces').value = s.piecesPerCrate; document.getElementById('skuLpp').value = s.litersPerPiece || 0; cats.value = s.category || ''; }
+      else { ['skuDesc', 'skuCode', 'skuCombine', 'skuLiters', 'skuPieces', 'skuLpp'].forEach(id => document.getElementById(id).value = ''); }
+      openModal('skuModal');
+    }
+    function editSku(i) { requirePassword(() => openSkuModal(i)); }
+    function deleteSku(i) { APP.sku_master.splice(i, 1); saveData(); renderSku(); renderManager(); showToast('SKU deleted'); }
+    function saveSku() {
+      const desc = document.getElementById('skuDesc').value.trim(), code = document.getElementById('skuCode').value.trim(), lpc = parseFloat(document.getElementById('skuLiters').value), ppc = parseFloat(document.getElementById('skuPieces').value), lpp = parseFloat(document.getElementById('skuLpp').value) || 0, cat = document.getElementById('skuCategory').value;
+      if (!desc || !code || isNaN(lpc) || isNaN(ppc)) { showToast('Fill all required fields', 'error'); return; }
+      const obj = { description: desc, code, combine: desc + ' - ' + code, litersPerCrate: lpc, piecesPerCrate: ppc, litersPerPiece: lpp, category: cat };
+      const idx = parseInt(document.getElementById('skuEditIdx').value);
+      if (idx >= 0) APP.sku_master[idx] = obj; else APP.sku_master.push(obj);
+      saveData(); closeModal('skuModal'); renderSku(); renderManager(); showToast(idx >= 0 ? 'SKU updated' : 'SKU added');
+    }
+
+    /* CSV UPLOAD */
+    function openUploadModal() { document.getElementById('csvFileInput').value = ''; openModal('uploadModal'); }
+    async function uploadCsv() {
+      const fileInput = document.getElementById('csvFileInput');
+      if (!fileInput.files.length) { showToast('Select a CSV file', 'error'); return; }
+      const formData = new FormData();
+      formData.append('file', fileInput.files[0]);
+      try {
+        const r = await fetch('/api/upload-sku-csv', { method: 'POST', body: formData });
+        const result = await r.json();
+        if (result.success && result.skus) {
+          result.skus.forEach(s => {
+            if (!APP.sku_master.find(x => x.combine === s.combine)) APP.sku_master.push(s);
+            if (s.category && !APP.categories.includes(s.category)) APP.categories.push(s.category);
+          });
+          saveData(); renderSku(); closeModal('uploadModal');
+          showToast(`${result.count} SKU(s) imported successfully!`);
+        } else { showToast(result.error || 'Upload failed', 'error'); }
+      } catch (e) { showToast('Upload failed', 'error'); }
+    }
+
+    /* CATEGORIES */
+    function openCategoryModal() { renderCategoryList(); openModal('categoryModal'); }
+    function renderCategoryList() {
+      const el = document.getElementById('categoryList'); el.innerHTML = '';
+      (APP.categories || []).forEach((c, i) => el.innerHTML += `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border:1px solid var(--border);border-radius:8px;margin-bottom:6px" oncontextmenu="handleCatRightClick(event, '${c.replace(/'/g, "\\'")}')"><span>${c}</span><button class="btn-icon minus" onclick="requirePassword(()=>deleteCategory(${i}))"><i class="fas fa-trash"></i></button></div>`);
+    }
+    function addCategory() {
+      const v = document.getElementById('newCatInput').value.trim(); if (!v) return;
+      if (!APP.categories) APP.categories = [];
+      if (APP.categories.includes(v)) { showToast('Category exists', 'error'); return; }
+      APP.categories.push(v); document.getElementById('newCatInput').value = ''; saveData(); renderCategoryList(); showToast('Category added');
+    }
+    function deleteCategory(i) { APP.categories.splice(i, 1); saveData(); renderCategoryList(); showToast('Category deleted'); }
+
+    /* ENHANCED MANAGER SETUP LOGIC */
+    let managerCart = [];
+    let selectedMgrCat = 'All';
+    let mgrSearchTerm = '';
+    let mgrDebounceTimer;
+
+    function renderManager() {
+      renderMgrCategories();
+      renderMgrSkus();
+      renderMgrCart();
+      renderLegacyManagerTable(); // Still keep this updated in background
+    }
+
+    function toggleManagerView() {
+      const enhanced = document.getElementById('enhancedMgrUI');
+      const legacy = document.getElementById('legacyMgrUI');
+      const btn = document.getElementById('toggleMgrBtn');
+      if (enhanced.style.display === 'none') {
+        enhanced.style.display = 'grid';
+        legacy.style.display = 'none';
+        btn.innerHTML = '<i class="fas fa-list"></i>Current Slots';
+      } else {
+        enhanced.style.display = 'none';
+        legacy.style.display = 'block';
+        btn.innerHTML = '<i class="fas fa-plus-square"></i>Add More SKUs';
+        renderLegacyManagerTable();
+      }
+    }
+
+    function renderMgrCategories() {
+      const cont = document.getElementById('mgrCatList');
+      let html = `<div class="cat-item ${selectedMgrCat === 'All' ? 'active' : ''}" onclick="selectMgrCat('All')"><i class="fas fa-th-large"></i>All SKUs</div>`;
+      (APP.categories || []).forEach(c => {
+        html += `<div class="cat-item ${selectedMgrCat === c ? 'active' : ''}" onclick="selectMgrCat('${c.replace(/'/g, "\\'")}')" oncontextmenu="handleCatRightClick(event, '${c.replace(/'/g, "\\'")}')"><i class="fas fa-folder"></i>${c}</div>`;
+      });
+      cont.innerHTML = html;
+    }
+
+    function selectMgrCat(cat) { selectedMgrCat = cat; renderMgrCategories(); renderMgrSkus(); }
+
+    function debounceMgrSearch() {
+      clearTimeout(mgrDebounceTimer);
+      mgrDebounceTimer = setTimeout(() => {
+        mgrSearchTerm = document.getElementById('mgrSearchInput').value.toLowerCase();
+        renderMgrSkus();
+      }, 300);
+    }
+
+    function renderMgrSkus() {
+      const cont = document.getElementById('mgrSkuList');
+      let filtered = APP.sku_master;
+
+      // Logical Issue Fix: Hide SKUs already present in Manager Setup
+      const existingSlots = (APP.manager_setup || []).map(m => m.sku);
+      filtered = filtered.filter(s => !existingSlots.includes(s.combine));
+
+      if (mgrSearchTerm) {
+        filtered = filtered.filter(s => s.combine.toLowerCase().includes(mgrSearchTerm) || s.code.toLowerCase().includes(mgrSearchTerm));
+      } else if (selectedMgrCat !== 'All') {
+        filtered = filtered.filter(s => s.category === selectedMgrCat);
+      }
+
+      if (!filtered.length) { cont.innerHTML = '<div class="empty-state"><p>No SKUs found (or all already added)</p></div>'; return; }
+
+      // Progressive rendering for performance
+      let html = '';
+      filtered.slice(0, 100).forEach(s => {
+        const isSelected = managerCart.find(c => c.combine === s.combine);
+        html += `
+                <div class="sku-grid-item ${isSelected ? 'selected-row' : ''}" onclick="toggleCartItem('${s.combine.replace(/'/g, "\\'")}')">
+                    <input type="checkbox" ${isSelected ? 'checked' : ''}>
+                    <div class="sku-info">
+                        <div>${s.description}</div>
+                        <small>${s.code} | ${s.category || 'No Category'}</small>
+                    </div>
+                </div>`;
+      });
+      if (filtered.length > 100) html += `<div style="padding:15px; text-align:center; color:var(--text-light); font-size:12px">... use search to find more ...</div>`;
+      cont.innerHTML = html;
+    }
+
+    function selectAllMgrSkus() {
+      let filtered = APP.sku_master;
+      const existingSlots = (APP.manager_setup || []).map(m => m.sku);
+      filtered = filtered.filter(s => !existingSlots.includes(s.combine));
+
+      if (mgrSearchTerm) {
+        filtered = filtered.filter(s => s.combine.toLowerCase().includes(mgrSearchTerm) || s.code.toLowerCase().includes(mgrSearchTerm));
+      } else if (selectedMgrCat !== 'All') {
+        filtered = filtered.filter(s => s.category === selectedMgrCat);
+      }
+
+      if (!filtered.length) return;
+
+      filtered.forEach(s => {
+        if (!managerCart.find(c => c.combine === s.combine)) {
+          managerCart.push({ combine: s.combine, qty: 1 });
+        }
+      });
+      renderMgrSkus();
+      renderMgrCart();
+      showToast(`Added ${filtered.length} SKUs to cart`);
+    }
+
+    function toggleCartItem(combine) {
+      const existing = managerCart.find(c => c.combine === combine);
+      if (existing) {
+        managerCart = managerCart.filter(c => c.combine !== combine);
+      } else {
+        managerCart.push({ combine, qty: 1 });
+      }
+      renderMgrSkus();
+      renderMgrCart();
+    }
+
+    function renderMgrCart() {
+      const cont = document.getElementById('mgrCartItems');
+      if (!managerCart.length) { cont.innerHTML = '<div class="empty-state" style="padding:40px 10px"><i class="fas fa-shopping-cart"></i><p>Select SKUs to add</p></div>'; return; }
+
+      let html = '';
+      managerCart.forEach((item, idx) => {
+        html += `
+                <div class="cart-item">
+                    <div class="cart-item-header">
+                        <div class="cart-item-title">${item.combine}</div>
+                        <button class="btn-icon minus" style="width:24px;height:24px" onclick="removeFromCart(${idx})"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div class="cart-controls">
+                        <span style="color:var(--text-light)">Slots needed:</span>
+                        <input type="number" class="qty-input" value="${item.qty}" min="1" onchange="updateCartQty(${idx}, this.value)">
+                    </div>
+                </div>`;
+      });
+      cont.innerHTML = html;
+    }
+
+    function removeFromCart(idx) { managerCart.splice(idx, 1); renderMgrSkus(); renderMgrCart(); }
+    function updateCartQty(idx, val) { managerCart[idx].qty = parseInt(val) || 1; }
+
+    async function submitBulkSlots() {
+      if (!managerCart.length) { showToast('Cart is empty!', 'warning'); return; }
+
+      let startSlot = APP.manager_setup.length ? Math.max(...APP.manager_setup.map(m => parseInt(m.slot) || 0)) + 1 : 1;
+
+      managerCart.forEach(item => {
+        for (let i = 0; i < item.qty; i++) {
+          APP.manager_setup.push({ slot: startSlot++, sku: item.combine, unlocked: false });
+        }
+      });
+
+      managerCart = [];
+      saveData();
+      renderAll();
+      showToast('Successfully added slots');
+      // Switch to legacy view to show the result
+      document.getElementById('enhancedMgrUI').style.display = 'none';
+      document.getElementById('legacyMgrUI').style.display = 'block';
+      document.getElementById('toggleMgrBtn').innerHTML = '<i class="fas fa-plus-square"></i>Add More SKUs';
+    }
+
+    function toggleAllSlots(cb) {
+      const cbs = document.querySelectorAll('.slot-checkbox');
+      cbs.forEach(c => c.checked = cb.checked);
+      updateBulkDeleteSlotBtn();
+    }
+
+    function updateBulkDeleteSlotBtn() {
+      const cbs = document.querySelectorAll('.slot-checkbox:checked');
+      const btn = document.getElementById('bulkDeleteSlotBtn');
+      if (btn) {
+        if (cbs.length > 0) {
+          btn.style.display = 'inline-flex';
+          btn.innerHTML = `<i class="fas fa-trash"></i>Delete Selected (${cbs.length})`;
+        } else {
+          btn.style.display = 'none';
+        }
+      }
+    }
+
+    function deleteSelectedSlots() {
+      const cbs = document.querySelectorAll('.slot-checkbox:checked');
+      const indices = Array.from(cbs).map(c => parseInt(c.value)).sort((a, b) => b - a);
+      if (indices.length === 0) return;
+      indices.forEach(i => APP.manager_setup.splice(i, 1));
+      saveData();
+      renderLegacyManagerTable();
+      renderDashboard();
+      showToast(`Deleted ${indices.length} slots`);
+    }
+
+    function renderLegacyManagerTable() {
+      const tb = document.getElementById('managerBody'); tb.innerHTML = '';
+      const selectAllEl = document.getElementById('selectAllSlots');
+      if (selectAllEl) selectAllEl.checked = false;
+      updateBulkDeleteSlotBtn();
+      if (!APP.manager_setup.length) { tb.innerHTML = '<tr><td colspan="4" class="empty-state"><p>No slots configured.</p></td></tr>'; return; }
+      APP.manager_setup.forEach((m, i) => {
+        const opts = APP.sku_master.map(s => `<option value="${s.combine}" ${s.combine === m.sku ? 'selected' : ''}>${s.combine}</option>`).join('');
+        tb.innerHTML += `<tr>
+          <td><input type="checkbox" class="slot-checkbox" value="${i}" onchange="updateBulkDeleteSlotBtn()"></td>
+          <td><div style="position:relative">${!m.unlocked ? `<div style="position:absolute;inset:0;z-index:10;cursor:pointer" onclick="requirePassword(()=>unlockManagerSlot(${i}))"></div>` : ''}<input type="text" value="${m.slot}" onchange="updateManagerSlot(${i},'slot',this.value)" style="width:80px"></div></td>
+          <td><div style="position:relative">${!m.unlocked ? `<div style="position:absolute;inset:0;z-index:10;cursor:pointer" onclick="requirePassword(()=>unlockManagerSlot(${i}))"></div>` : ''}<select onchange="updateManagerSlot(${i},'sku',this.value)" style="width:100%"><option value="">-- Select SKU --</option>${opts}</select></div></td>
+          <td><button class="btn-icon minus" onclick="requirePassword(()=>deleteManagerSlot(${i}))"><i class="fas fa-trash"></i></button></td></tr>`;
+      });
+    }
+
+    function clearAllManagerSlots() {
+      if (!confirm("Are you sure you want to clear ALL production slots? This will reset the dashboard dashboard.")) return;
+      APP.manager_setup = [];
+      APP.dashboard = [];
+      saveData();
+      renderAll();
+      showToast('Dashboard cleared');
+    }
+
+    function addManagerSlot() { APP.manager_setup.push({ slot: APP.manager_setup.length ? Math.max(...APP.manager_setup.map(m => parseInt(m.slot) || 0)) + 1 : 1, sku: '', unlocked: true }); saveData(); renderLegacyManagerTable(); renderDashboard(); showToast('Slot added'); }
+    function unlockManagerSlot(i) { APP.manager_setup[i].unlocked = true; renderLegacyManagerTable(); showToast('Slot unlocked'); }
+    function updateManagerSlot(i, field, val) { APP.manager_setup[i][field] = val; APP.manager_setup[i].unlocked = false; saveData(); renderLegacyManagerTable(); renderDashboard(); showToast('Slot updated'); }
+    function deleteManagerSlot(i) { APP.manager_setup.splice(i, 1); saveData(); renderLegacyManagerTable(); renderDashboard(); showToast('Slot removed'); }
+
+
+    /* DASHBOARD */
+    function renderDashboard() {
+      const newDash = APP.manager_setup.map(m => {
+        const existing = APP.dashboard.find(d => d.slot == m.slot) || {};
+        if (m.sku && existing.sku && m.sku !== existing.sku) {
+          return { slot: m.slot, sku: m.sku, createCount: 0, batchCode: '', looses: 0 };
+        }
+        return { slot: m.slot, sku: m.sku, createCount: existing.createCount || 0, batchCode: existing.batchCode || '', looses: existing.looses || 0 };
+      });
+      APP.dashboard = newDash;
+
+      let totalC = 0, totalL = 0, totalP = 0;
+      APP.dashboard.forEach(d => {
+        const si = APP.sku_master.find(s => s.combine === d.sku);
+        const lpc = si ? si.litersPerCrate : 0, ppc = si ? si.piecesPerCrate : 0, lpp = si ? si.litersPerPiece || 0 : 0;
+        totalC += d.createCount;
+        totalL += d.createCount * lpc + (d.looses || 0) * lpp;
+        totalP += d.createCount * ppc + (d.looses || 0);
+      });
+      document.getElementById('dashStats').innerHTML = `
+    <div class="stat-card"><h4>Total Crates</h4><div class="value">${totalC}</div></div>
+    <div class="stat-card green"><h4>Total Liters</h4><div class="value">${totalL.toFixed(3)}</div></div>
+    <div class="stat-card orange"><h4>Total Pieces</h4><div class="value">${totalP}</div></div>
+    <div class="stat-card red"><h4>Active Slots</h4><div class="value">${APP.dashboard.length}</div></div>`;
+      const tb = document.getElementById('dashboardBody'); tb.innerHTML = '';
+      if (!APP.dashboard.length) { tb.innerHTML = '<tr><td colspan="7" class="empty-state"><p>Configure slots in Manager Setup first.</p></td></tr>'; return; }
+      APP.dashboard.forEach((d, i) => {
+        const si = APP.sku_master.find(s => s.combine === d.sku);
+        const lpc = si ? si.litersPerCrate : 0, ppc = si ? si.piecesPerCrate : 0, lpp = si ? si.litersPerPiece || 0 : 0;
+        const liters = (d.createCount * lpc + (d.looses || 0) * lpp).toFixed(3);
+        const pieces = d.createCount * ppc + (d.looses || 0);
+        tb.innerHTML += `<tr><td><strong>${d.slot}</strong></td><td><span class="tag tag-blue">${d.sku || 'Not Set'}</span></td><td><div class="counter-group"><button class="btn-icon minus" onclick="dashCount(${i},-1)"><i class="fas fa-minus"></i></button><span class="count">${d.createCount}</span><button class="btn-icon plus" onclick="dashCount(${i},1)"><i class="fas fa-plus"></i></button></div></td><td><input type="text" value="${d.batchCode}" onchange="dashBatch(${i},this.value)" style="width:120px" placeholder="Batch..."></td><td>${liters}</td><td>${pieces}</td><td><div class="counter-group"><button class="btn-icon minus" onclick="dashLoose(${i},-1)"><i class="fas fa-minus"></i></button><span class="count">${d.looses || 0}</span><button class="btn-icon plus" onclick="dashLoose(${i},1)"><i class="fas fa-plus"></i></button></div></td></tr>`;
+      });
+    }
+    function dashCount(i, delta) {
+      if (!APP.dashboard[i].batchCode) { showToast('Please fill Batch No first', 'warning'); return; }
+      APP.dashboard[i].createCount = Math.max(0, APP.dashboard[i].createCount + delta);
+      syncHistory(i); saveData(); updateDashboardRowDOM(i);
+    }
+    function dashBatch(i, val) {
+      if (APP.dashboard[i].batchCode !== val) {
+        APP.dashboard[i].createCount = 0;
+        APP.dashboard[i].looses = 0;
+      }
+      APP.dashboard[i].batchCode = val;
+      syncHistory(i); saveData(); updateDashboardRowDOM(i);
+    }
+    function dashLoose(i, delta) {
+      if (!APP.dashboard[i].batchCode) { showToast('Please fill Batch No first', 'warning'); return; }
+      APP.dashboard[i].looses = Math.max(0, (APP.dashboard[i].looses || 0) + delta);
+      syncHistory(i); saveData(); updateDashboardRowDOM(i);
+    }
+
+    function updateDashboardRowDOM(i) {
+      const d = APP.dashboard[i];
+      const si = APP.sku_master.find(s => s.combine === d.sku);
+      const lpc = si ? si.litersPerCrate : 0, ppc = si ? si.piecesPerCrate : 0, lpp = si ? si.litersPerPiece || 0 : 0;
+      const liters = (d.createCount * lpc + (d.looses || 0) * lpp).toFixed(3);
+      const pieces = d.createCount * ppc + (d.looses || 0);
+      const tr = document.getElementById('dashboardBody').children[i];
+      if (tr) {
+        tr.querySelector('td:nth-child(3) .count').textContent = d.createCount;
+        tr.querySelector('td:nth-child(4) input').value = d.batchCode;
+        tr.querySelector('td:nth-child(5)').textContent = liters;
+        tr.querySelector('td:nth-child(6)').textContent = pieces;
+        tr.querySelector('td:nth-child(7) .count').textContent = d.looses || 0;
+      }
+      let totalC = 0, totalL = 0, totalP = 0;
+      APP.dashboard.forEach(db => {
+        const sid = APP.sku_master.find(s => s.combine === db.sku);
+        const dlpc = sid ? sid.litersPerCrate : 0, dppc = sid ? sid.piecesPerCrate : 0, dlpp = sid ? sid.litersPerPiece || 0 : 0;
+        totalC += db.createCount; totalL += db.createCount * dlpc + (db.looses || 0) * dlpp; totalP += db.createCount * dppc + (db.looses || 0);
+      });
+      const tbc = document.getElementById('dashStats').children;
+      if (tbc.length >= 4) {
+        tbc[0].querySelector('.value').textContent = totalC;
+        tbc[1].querySelector('.value').textContent = totalL.toFixed(3);
+        tbc[2].querySelector('.value').textContent = totalP;
+      }
+    }
+
+    function syncHistory(i, skipSave = false) {
+      const d = APP.dashboard[i]; if (!d.sku || !d.batchCode) return false;
+      const now = new Date();
+      const dateStr = now.toLocaleDateString('en-IN');
+      const shift = getCurrentShiftName();
+
+      const existIdx = APP.history.findIndex(h => h.slot === d.slot && h.sku === d.sku && (h.batchCode || '') === (d.batchCode || '') && h.date === dateStr && h.shift === shift);
+
+      if (d.createCount === 0 && (!d.looses || d.looses === 0)) {
+        return false;
+      }
+
+      const si = APP.sku_master.find(s => s.combine === d.sku);
+      const lpc = si ? si.litersPerCrate : 0, ppc = si ? si.piecesPerCrate : 0, lpp = si ? si.litersPerPiece || 0 : 0;
+
+      const entry = { slot: d.slot, date: dateStr, time: now.toLocaleTimeString('en-IN'), shift: shift, sku: d.sku, batchCode: d.batchCode || '', crates: d.createCount, liters: parseFloat((d.createCount * lpc + (d.looses || 0) * lpp).toFixed(3)), pieces: d.createCount * ppc + (d.looses || 0), looses: d.looses || 0 };
+      if (existIdx >= 0) {
+        if (JSON.stringify(APP.history[existIdx]) === JSON.stringify(entry)) return false;
+        APP.history[existIdx] = entry;
+      } else APP.history.push(entry);
+
+      if (!skipSave) {
+        fetch('/api/history', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(entry) }).catch(console.error);
+        saveData();
+      }
+      return true;
+    }
+
+    /* HISTORY */
+    function renderHistory() {
+      const tb = document.getElementById('historyBody'); tb.innerHTML = '';
+      if (!APP.history.length) { tb.innerHTML = '<tr><td colspan="10" class="empty-state"><p>No history records yet.</p></td></tr>'; return; }
+      [...APP.history].reverse().forEach(h => {
+        tb.innerHTML += `<tr><td>${h.date}</td><td>${h.time}</td><td><span class="tag tag-green">${h.shift}</span></td><td><strong>${h.slot !== undefined ? h.slot : '-'}</strong></td><td>${h.sku}</td><td>${h.batchCode || '-'}</td><td>${h.crates}</td><td>${h.liters}</td><td>${h.pieces}</td><td>${h.looses}</td></tr>`;
+      });
+    }
+
+    /* FACTORY DASHBOARD */
+    function renderFactory() {
+      const shSel = document.getElementById('factoryShiftFilter');
+      if (shSel) {
+        const shCur = shSel.value;
+        shSel.innerHTML = '<option value="">All Shifts</option>';
+        (APP.settings.shifts || []).forEach(s => {
+          shSel.innerHTML += `<option value="${s.name}" ${s.name === shCur ? 'selected' : ''}>${s.name}</option>`;
+        });
+      }
+
+      const from = document.getElementById('factoryDateFrom') ? document.getElementById('factoryDateFrom').value : '';
+      const to = document.getElementById('factoryDateTo') ? document.getElementById('factoryDateTo').value : '';
+      const shiftF = document.getElementById('factoryShiftFilter') ? document.getElementById('factoryShiftFilter').value : '';
+
+      const agg = {};
+
+      if (from || to || shiftF) {
+        let data = [...APP.history];
+        if (from || to) {
+          const fromParts = from ? from.split('-') : null;
+          const toParts = to ? to.split('-') : null;
+          let fromDate = fromParts ? new Date(parseInt(fromParts[0]), parseInt(fromParts[1]) - 1, parseInt(fromParts[2]), 0, 0, 0) : null;
+          let toDate = toParts ? new Date(parseInt(toParts[0]), parseInt(toParts[1]) - 1, parseInt(toParts[2]), 23, 59, 59) : null;
+          data = data.filter(h => {
+            const d = parseDateStr(h.date);
+            if (!d) return false;
+            if (fromDate && d < fromDate) return false;
+            if (toDate && d > toDate) return false;
+            return true;
+          });
+        }
+        if (shiftF) data = data.filter(h => h.shift === shiftF);
+        
+        data.forEach(h => {
+          const key = h.sku + '|' + (h.batchCode || '');
+          if (!agg[key]) agg[key] = { sku: h.sku, batch: h.batchCode || '', crates: 0, liters: 0 };
+          agg[key].crates += h.crates || 0;
+          agg[key].liters += parseFloat(h.liters || 0);
+        });
+      } else {
+        APP.dashboard.forEach(d => {
+          if (!d.sku) return;
+          const si = APP.sku_master.find(s => s.combine === d.sku);
+          const lpc = si ? si.litersPerCrate : 0, lpp = si ? si.litersPerPiece || 0 : 0;
+          const key = d.sku + '|' + (d.batchCode || '');
+          if (!agg[key]) agg[key] = { sku: d.sku, batch: d.batchCode, crates: 0, liters: 0 };
+          agg[key].crates += d.createCount;
+          agg[key].liters += d.createCount * lpc + (d.looses || 0) * lpp;
+        });
+      }
+
+      const rows = Object.values(agg);
+      let tC = 0, tL = 0; rows.forEach(r => { tC += r.crates; tL += r.liters; });
+      document.getElementById('factoryStats').innerHTML = `
+    <div class="stat-card"><h4>Total SKUs</h4><div class="value">${rows.length}</div></div>
+    <div class="stat-card green"><h4>Total Crates</h4><div class="value">${tC}</div></div>
+    <div class="stat-card orange"><h4>Total Liters</h4><div class="value">${tL.toFixed(3)}</div></div>`;
+      const tb = document.getElementById('factoryBody'); tb.innerHTML = '';
+      if (!rows.length) { tb.innerHTML = '<tr><td colspan="4" class="empty-state"><p>No production data.</p></td></tr>'; return; }
+      rows.forEach(r => tb.innerHTML += `<tr><td>${r.sku}</td><td>${r.batch || '-'}</td><td>${r.crates}</td><td>${r.liters.toFixed(3)}</td></tr>`);
+    }
+
+    /* PRODUCTION PIVOT */
+    function renderPivot() {
+      const from = document.getElementById('pivotDateFrom').value, to = document.getElementById('pivotDateTo').value, skuF = document.getElementById('pivotSkuFilter').value, shiftF = document.getElementById('pivotShiftFilter').value;
+
+      const sel = document.getElementById('pivotSkuFilter'); const cur = sel.value;
+      sel.innerHTML = '<option value="">All SKUs</option>';
+      [...new Set(APP.history.map(h => h.sku))].forEach(s => sel.innerHTML += `<option value="${s}" ${s === cur ? 'selected' : ''}>${s}</option>`);
+
+      const shSel = document.getElementById('pivotShiftFilter'); const shCur = shSel.value;
+      shSel.innerHTML = '<option value="">All Shifts</option>';
+      (APP.settings.shifts || []).forEach(s => shSel.innerHTML += `<option value="${s.name}" ${s.name === shCur ? 'selected' : ''}>${s.name}</option>`);
+
+      let data = [...APP.history];
+      if (from || to) {
+        const fromParts = from ? from.split('-') : null;
+        const toParts = to ? to.split('-') : null;
+        let fromDate = fromParts ? new Date(parseInt(fromParts[0]), parseInt(fromParts[1]) - 1, parseInt(fromParts[2]), 0, 0, 0) : null;
+        let toDate = toParts ? new Date(parseInt(toParts[0]), parseInt(toParts[1]) - 1, parseInt(toParts[2]), 23, 59, 59) : null;
+        data = data.filter(h => {
+          const d = parseDateStr(h.date);
+          if (!d) return false;
+          if (fromDate && d < fromDate) return false;
+          if (toDate && d > toDate) return false;
+          return true;
+        });
+      }
+      if (shiftF) data = data.filter(h => h.shift === shiftF);
+      if (skuF) data = data.filter(h => h.sku === skuF);
+      // Aggregate by SKU for charts
+      const skuAgg = {};
+      data.forEach(h => { if (!skuAgg[h.sku]) skuAgg[h.sku] = { sku: h.sku, crates: 0, liters: 0, pieces: 0 }; skuAgg[h.sku].crates += h.crates || 0; skuAgg[h.sku].liters += h.liters || 0; skuAgg[h.sku].pieces += h.pieces || 0; });
+      const aggRows = Object.values(skuAgg);
+      const labels = aggRows.map(r => r.sku.length > 25 ? r.sku.substring(0, 25) + '...' : r.sku);
+      const cratesData = aggRows.map(r => r.crates), litersData = aggRows.map(r => r.liters);
+      const colors = ['#1a56db', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4', '#ec4899', '#84cc16', '#f97316', '#14b8a6'];
+      if (barChart) barChart.destroy(); if (pieChart) pieChart.destroy(); if (lineChart) lineChart.destroy();
+      const bc = document.getElementById('barChart');
+      if (bc) barChart = new Chart(bc, { type: 'bar', data: { labels, datasets: [{ label: 'Crates', data: cratesData, backgroundColor: colors.slice(0, labels.length), borderRadius: 6 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } });
+      const pc = document.getElementById('pieChart');
+      if (pc) pieChart = new Chart(pc, { type: 'doughnut', data: { labels, datasets: [{ data: litersData, backgroundColor: colors.slice(0, labels.length) }] }, options: { responsive: true, maintainAspectRatio: false } });
+      // Line by date
+      const dateAgg = {};
+      data.forEach(h => { if (!dateAgg[h.date]) dateAgg[h.date] = 0; dateAgg[h.date] += h.crates || 0; });
+      const dLabels = Object.keys(dateAgg), dCrates = Object.values(dateAgg);
+      const lc = document.getElementById('lineChart');
+      if (lc) lineChart = new Chart(lc, { type: 'line', data: { labels: dLabels, datasets: [{ label: 'Crates', data: dCrates, borderColor: '#1a56db', backgroundColor: 'rgba(26,86,219,.1)', fill: true, tension: .4, pointRadius: 4 }] }, options: { responsive: true, maintainAspectRatio: false } });
+      // Data table - show aggregated records
+      const skuBatchAgg = {};
+      data.forEach(h => {
+        const key = h.sku + '|' + (h.batchCode || '');
+        if (!skuBatchAgg[key]) skuBatchAgg[key] = { sku: h.sku, batch: h.batchCode || '', crates: 0, liters: 0, pieces: 0 };
+        skuBatchAgg[key].crates += h.crates || 0;
+        skuBatchAgg[key].liters += parseFloat(h.liters || 0);
+        skuBatchAgg[key].pieces += h.pieces || 0;
+      });
+      const aggTableRows = Object.values(skuBatchAgg);
+
+      const tb = document.getElementById('pivotBody'); tb.innerHTML = '';
+      if (!aggTableRows.length) { tb.innerHTML = '<tr><td colspan="5" class="empty-state"><p>No data for selected filters.</p></td></tr>'; return; }
+      aggTableRows.forEach(r => {
+        tb.innerHTML += `<tr><td>${r.sku}</td><td>${r.batch || '-'}</td><td>${r.crates}</td><td>${Number((r.liters).toFixed(3))}</td><td>${r.pieces}</td></tr>`;
+      });
+    }
+    function applyPivotFilter() { renderPivot(); }
+
+    function exportPivotCSV() {
+      const tb = document.getElementById('pivotBody');
+      const rows = tb.querySelectorAll('tr');
+      if (!rows.length || rows[0].querySelector('.empty-state')) { showToast('No data to export', 'warning'); return; }
+
+      const fFrom = document.getElementById('pivotDateFrom').value || 'All';
+      const fTo = document.getElementById('pivotDateTo').value || 'All';
+      const fShift = document.getElementById('pivotShiftFilter').value || 'All';
+      const fSku = document.getElementById('pivotSkuFilter').value || 'All';
+
+      let csv = 'SKU,Batch,Crates,Liters,Pieces,Date From,Date To,Shift,SKU Filter\n';
+      let isFirst = true;
+
+      rows.forEach(r => {
+        const cols = r.querySelectorAll('td');
+        if (cols.length === 5) {
+          if (isFirst) {
+            csv += `"${cols[0].innerText}","${cols[1].innerText}",${cols[2].innerText},${cols[3].innerText},${cols[4].innerText},"${fFrom}","${fTo}","${fShift}","${fSku}"\n`;
+            isFirst = false;
+          } else {
+            csv += `"${cols[0].innerText}","${cols[1].innerText}",${cols[2].innerText},${cols[3].innerText},${cols[4].innerText},,,,\n`;
+          }
+        }
+      });
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `Production_Pivot_${new Date().toISOString().slice(0, 10)}.csv`;
+      a.click();
+    }
+
+    async function exportPivotPDF() {
+      const tb = document.getElementById('pivotBody');
+      const rows = tb.querySelectorAll('tr');
+      if (!rows.length || rows[0].querySelector('.empty-state')) { showToast('No data to export', 'warning'); return; }
+
+      const fFrom = document.getElementById('pivotDateFrom').value || 'All';
+      const fTo = document.getElementById('pivotDateTo').value || 'All';
+      const fShift = document.getElementById('pivotShiftFilter').value || 'All';
+      const fSku = document.getElementById('pivotSkuFilter').value || 'All';
+
+      const payload = Array.from(rows).map(r => {
+        const cols = r.querySelectorAll('td');
+        if (cols.length !== 5) return null;
+        return { sku: cols[0].innerText, batch: cols[1].innerText, crates: cols[2].innerText, liters: cols[3].innerText, pieces: cols[4].innerText };
+      }).filter(Boolean);
+      try {
+        showToast('Generating PDF...', 'success');
+        const r = await fetch('/api/export/pivot-pdf', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ data: payload, filters: { from: fFrom, to: fTo, shift: fShift, sku: fSku } })
+        });
+        if (!r.ok) throw new Error();
+        const blob = await r.blob();
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `Production_Pivot_${new Date().toISOString().slice(0, 10)}.pdf`;
+        a.click();
+      } catch (e) { showToast('Failed to generate PDF', 'error'); }
+    }
+
+    function parseDateStr(str) {
+      if (!str) return null;
+      const p = str.split('/');
+      if (p.length === 3) return new Date(parseInt(p[2]), parseInt(p[1]) - 1, parseInt(p[0]), 0, 0, 0);
+      const m = str.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      if (m) return new Date(parseInt(m[1]), parseInt(m[2]) - 1, parseInt(m[3]), 0, 0, 0);
+      return new Date(str);
+    }
+
+    /* DEFECTIVE ITEMS & ADJUSTMENTS */
+    let currentDefectSearch = [];
+
+    function renderDefectiveItems() {
+      renderDefectLogs();
+    }
+
+    function searchDefectiveItems() {
+      const date = document.getElementById('defectDate').value;
+      const sku = document.getElementById('defectSku').value.trim();
+      const batchCode = document.getElementById('defectBatch').value.trim();
+      
+      if (!date || !sku || !batchCode) {
+        showToast('Please provide Date, exact SKU, and Batch Code to search!', 'warning');
+        return;
+      }
+      
+      const searchParts = date.split('-');
+      const targetDateObj = new Date(parseInt(searchParts[0]), parseInt(searchParts[1]) - 1, parseInt(searchParts[2]), 0, 0, 0);
+      
+      currentDefectSearch = APP.history.map((h, i) => ({ ...h, originalIndex: i }))
+        .filter(h => {
+             const hDate = parseDateStr(h.date);
+             if (!hDate) return false;
+             const isDateMatch = hDate.getTime() === targetDateObj.getTime();
+             return isDateMatch && (h.sku.toLowerCase() === sku.toLowerCase()) && (h.batchCode.toLowerCase() === batchCode.toLowerCase());
+        });
+        
+      const tb = document.getElementById('defectResultsBody'); tb.innerHTML = '';
+      if (!currentDefectSearch.length) {
+        tb.innerHTML = '<tr><td colspan="6" class="empty-state"><p>No production data found for this date & SKU.</p></td></tr>';
+        return;
+      }
+      
+      currentDefectSearch.forEach(h => {
+        tb.innerHTML += `<tr>
+          <td><span class="tag tag-green">${h.shift}</span></td>
+          <td><strong>${h.slot}</strong></td>
+          <td>${h.sku}</td>
+          <td>${h.crates}</td>
+          <td>${h.looses || 0}</td>
+          <td>
+             <button class="btn btn-sm btn-primary" onclick="openDefectModal(${h.originalIndex}, 'crates')" title="Adjust Crates"><i class="fas fa-box"></i> Crates</button>
+             <button class="btn btn-sm btn-warning" onclick="openDefectModal(${h.originalIndex}, 'looses')" title="Adjust Looses" style="margin-left:4px;"><i class="fas fa-cube"></i> Looses</button>
+          </td>
+        </tr>`;
+      });
+    }
+
+    function openDefectModal(hIdx, type) {
+      const h = APP.history[hIdx];
+      if(!h) return;
+      document.getElementById('defectRecordIndex').value = hIdx;
+      document.getElementById('defectFieldType').value = type;
+      document.getElementById('defectActionType').textContent = type.toUpperCase();
+      document.getElementById('defectActionSku').textContent = h.sku;
+      document.getElementById('defectAmount').value = '-1';
+      document.getElementById('defectReason').value = '';
+      openModal('defectModal');
+    }
+
+    function confirmDefectAdjustment() {
+      const hIdx = parseInt(document.getElementById('defectRecordIndex').value);
+      const type = document.getElementById('defectFieldType').value;
+      const amt = parseInt(document.getElementById('defectAmount').value);
+      const reason = document.getElementById('defectReason').value.trim();
+      
+      if (!reason || reason.length < 3) {
+        showToast('Valid reason is MANDATORY!', 'error');
+        return;
+      }
+      if (!amt) {
+         showToast('Amount cannot be 0', 'error');
+         return;
+      }
+      
+      const h = APP.history[hIdx];
+      if (!h) return;
+      
+      const oldVal = h[type] || 0;
+      h[type] = Math.max(0, oldVal + amt);
+      
+      const si = APP.sku_master.find(s => s.combine === h.sku);
+      if (si) {
+         const lpc = si.litersPerCrate || 0, ppc = si.piecesPerCrate || 0, lpp = si.litersPerPiece || 0;
+         h.liters = parseFloat((h.crates * lpc + (h.looses || 0) * lpp).toFixed(3));
+         h.pieces = h.crates * ppc + (h.looses || 0);
+      }
+      
+      fetch('/api/history', { method: 'POST', headers:{ 'Content-Type': 'application/json' }, body: JSON.stringify(h) }).catch(console.error);
+      
+      if (!APP.defects) APP.defects = [];
+      const nowOptions = new Date();
+      APP.defects.push({
+         timestamp: Date.now(),
+         date: nowOptions.toLocaleDateString('en-IN'),
+         time: nowOptions.toLocaleTimeString('en-IN'),
+         sku: h.sku,
+         batchCode: h.batchCode || '',
+         type: type,
+         diff: amt,
+         reason: reason
+      });
+      
+      saveData();
+      closeModal('defectModal');
+      searchDefectiveItems(); 
+      renderDefectLogs();
+      renderAll(); 
+      showToast('Adjustment correctly logged and updated across history!');
+    }
+
+    function renderDefectLogs() {
+      const tb = document.getElementById('defectLogsBody');
+      if (!tb) return;
+      tb.innerHTML = '';
+      if (!APP.defects || !APP.defects.length) { tb.innerHTML = '<tr><td colspan="7" class="empty-state"><p>No defect adjustments found.</p></td></tr>'; return; }
+      [...APP.defects].reverse().forEach(d => {
+        const amtStr = d.diff > 0 ? ('+' + d.diff) : d.diff;
+        const color = d.diff > 0 ? 'var(--success)' : 'var(--danger)';
+        const batchPrint = d.batchCode || '-';
+        tb.innerHTML += `<tr><td>${d.date}</td><td>${d.time}</td><td>${d.sku}</td><td>${batchPrint}</td><td style="text-transform:capitalize">${d.type}</td><td style="color:${color};font-weight:bold;text-align:center;">${amtStr}</td><td>${d.reason}</td></tr>`;
+      });
+    }
+
+    /* SETTINGS */
+    function unlockSettings() {
+      const pwd = document.getElementById('adminPwdInput').value;
+      if (pwd === APP.settings.admin_password) { settingsUnlocked = true; document.getElementById('settingsLock').style.display = 'none'; document.getElementById('settingsContent').style.display = 'block'; renderShifts(); document.getElementById('backupPath').value = APP.settings.backup_path || ''; document.getElementById('adminPwdInput').value = ''; }
+      else { showToast('Invalid password', 'error'); }
+    }
+    function changePassword() {
+      const np = document.getElementById('newPwd').value.trim();
+      if (!np) { showToast('Password cannot be empty', 'error'); return; }
+      APP.settings.admin_password = np; saveData(); document.getElementById('newPwd').value = ''; showToast('Password updated');
+    }
+    function saveBackupPath() { APP.settings.backup_path = document.getElementById('backupPath').value.trim(); saveData(); showToast('Backup path saved - backups will auto-save here'); }
+
+    /* FOLDER BROWSER */
+    async function openFolderBrowser() {
+      currentBrowsePath = '';
+      try {
+        const r = await fetch('/api/drives');
+        const drives = await r.json();
+        document.getElementById('folderCurrentPath').textContent = 'Select a drive:';
+        const list = document.getElementById('folderList'); list.innerHTML = '';
+        drives.forEach(d => {
+          list.innerHTML += `<div class="folder-item" onclick="browseTo('${d.path.replace(/\\/g, '\\\\')}')"><i class="fas fa-hard-drive"></i>${d.name}</div>`;
+        });
+        openModal('folderModal');
+      } catch (e) { showToast('Cannot browse folders', 'error'); }
+    }
+    async function browseTo(p) {
+      try {
+        const r = await fetch('/api/browse-folders?path=' + encodeURIComponent(p));
+        const result = await r.json();
+        currentBrowsePath = result.current;
+        document.getElementById('folderCurrentPath').textContent = result.current;
+        const list = document.getElementById('folderList'); list.innerHTML = '';
+        if (result.parent) list.innerHTML += `<div class="folder-item" onclick="browseTo('${result.parent.replace(/\\/g, '\\\\')}')"><i class="fas fa-arrow-left"></i>.. (Go Back)</div>`;
+        (result.folders || []).forEach(f => {
+          list.innerHTML += `<div class="folder-item" onclick="browseTo('${f.path.replace(/\\/g, '\\\\')}')"><i class="fas fa-folder"></i>${f.name}</div>`;
+        });
+        if (!result.folders || !result.folders.length) list.innerHTML += '<div style="padding:20px;text-align:center;color:var(--text-light)">No subfolders</div>';
+      } catch (e) { showToast('Cannot read folder', 'error'); }
+    }
+    function selectCurrentFolder() {
+      if (!currentBrowsePath) { showToast('Select a folder first', 'error'); return; }
+      document.getElementById('backupPath').value = currentBrowsePath;
+      closeModal('folderModal');
+      showToast('Folder selected: ' + currentBrowsePath);
+    }
+
+    /* SHIFTS */
+    function renderShifts() {
+      const tb = document.getElementById('shiftBody'); tb.innerHTML = '';
+      (APP.settings.shifts || []).forEach((s, i) => {
+        tb.innerHTML += `<tr><td>${s.name}</td><td>${s.start}</td><td>${s.end}</td><td><strong>${s.resetTime || '-'}</strong></td><td><button class="btn-icon" onclick="requirePassword(()=>editShift(${i}))"><i class="fas fa-pen"></i></button> <button class="btn-icon minus" onclick="requirePassword(()=>deleteShift(${i}))"><i class="fas fa-trash"></i></button></td></tr>`;
+      });
+    }
+    function openShiftModal(idx = -1) {
+      document.getElementById('shiftEditIdx').value = idx;
+      document.getElementById('shiftModalTitle').textContent = idx === -1 ? 'Add Shift' : 'Edit Shift';
+      if (idx >= 0) { const s = APP.settings.shifts[idx]; document.getElementById('shiftName').value = s.name; document.getElementById('shiftStart').value = s.start; document.getElementById('shiftEnd').value = s.end; document.getElementById('shiftReset').value = s.resetTime || ''; }
+      else { ['shiftName', 'shiftStart', 'shiftEnd', 'shiftReset'].forEach(id => document.getElementById(id).value = ''); }
+      openModal('shiftModal');
+    }
+    function editShift(i) { openShiftModal(i); }
+    function deleteShift(i) { APP.settings.shifts.splice(i, 1); saveData(); renderShifts(); showToast('Shift deleted'); }
+    function saveShift() {
+      const name = document.getElementById('shiftName').value.trim(), start = document.getElementById('shiftStart').value, end = document.getElementById('shiftEnd').value, resetTime = document.getElementById('shiftReset').value;
+      if (!name || !start || !end) { showToast('Fill all fields', 'error'); return; }
+      const obj = { id: Date.now(), name, start, end, resetTime };
+      const idx = parseInt(document.getElementById('shiftEditIdx').value);
+      if (idx >= 0) APP.settings.shifts[idx] = { ...APP.settings.shifts[idx], ...obj }; else APP.settings.shifts.push(obj);
+      saveData(); closeModal('shiftModal'); renderShifts(); showToast(idx >= 0 ? 'Shift updated' : 'Shift added');
+    }
+  </script>
+</body>
+
+</html>
